@@ -1,0 +1,135 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PIN POINT ENGINEERS</title>
+	<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css">
+	<script src="static/js/jquery-3.4.1.min.js"></script>	
+	<script defer src="static/js/script1.js"></script>
+	<script type=module defer src="static/js/mainLayout.js"></script>
+	<script src="static/js/nav_handler.js"></script>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+
+<body>
+
+<script>
+
+
+
+
+</script>
+
+
+
+<my-header></my-header>
+
+
+<!-- FRAME SECTION START -->
+	<div id="frame_container" >
+		<h5 id = "container_header">Equipment Details Table</h5>
+		<div id="data_frame">
+			<div class="frame">
+				<div class="sections">
+					<table class="code_tbl table-striped table-bordered">
+						<tr>
+							<th>Type</th>	
+							<th>EQUIPMENT_NAME</th>
+							<th>MAKE</th>	
+							<th>MODEL NUMBER</th>	
+							<th>SR_NO_ID</th>
+							<th>DONE DATE</th>
+							<th>DUE_DATE</th>	
+							<th>STATUS</th>	
+							<th>ISSUED TO </th>		
+							<th>COMPANY NAME</th>	
+							<th>REMARK</th>								
+						</tr>
+						{% for equipment in equipment_list %}
+						<tr>
+						
+						
+						<td>
+							<select class="textfield" name="Type" value id="Type" style="width:100%">
+
+							
+							{%for equipment_category  in eqtype%}
+							{%if equipment_category ==equipment.Type%}
+							  <option value="{{equipment_category}}" selected>{{equipment_category}}</option>							  
+							{%else%}
+							  <option value="{{equipment_category}}">{{equipment_category}}</option>
+							{%endif%}
+							{% endfor %}
+								
+							</select>
+						</td>
+						
+						<td>
+							<select class="textfield" type="text"  class="textfield" name="EQUIPMENT_NAME" id="EQUIPMENT_NAME" style="width:100%">	
+							{%for equipment_category  in Equipment_Namelst%}
+							{%if equipment_category ==equipment.EQUIPMENT_NAME%}
+							  <option value="{{equipment_category}}" selected>{{equipment_category}}</option>							  
+							{%else%}
+							  <option value="{{equipment_category}}">{{equipment_category}}</option>
+							{%endif%}
+							{% endfor %}
+								
+							</select>
+						
+						
+						</td>
+						
+						
+						<td>
+							<input type="text" name="MAKE" value="{{equipment.MAKE}}" id="MAKE" style="width:100%">								
+	
+						</td>
+							
+													
+							<td><input type="text" name="MODEL_NUMBER" class="textfield" value="{{equipment.MODEL_NUMBER}}" ></td>	
+							<td><input type="text" name="SR_NO_ID" class="textfield" value="{{equipment.SR_NO_ID}}" ></td>
+							<td><input type="text" name="DONE_DATE" class="textfield" value="{{equipment.DONE_DATE}}" ></td>
+							<td><input type="text" name="DUE_DATE" class="textfield" value="{{equipment.DUE_DATE}}" ></td>
+							<td>
+								<select class="textfield" name="approve_deny" id="approve_deny" style="width:100%">	
+							    {%for equipment_category in ['REQUESTED','APPROVED','AVAILABLE','CLOSED'] %}
+								{%if equipment_category==equipment.STATUS%}
+								  <option value="{{equipment_category}}" selected>{{equipment_category}}</option>							  
+								{%else%}
+								  <option value="{{equipment_category}}">{{equipment_category}}</option>
+								{%endif%}
+								{% endfor %}									
+								</select>
+							</td>
+							<td><input type="text" name="ISSUED_TO" class="textfield" value="{{equipment.ISSUED_TO}}" disabled></td>
+							<td><input type="text" name="COMPANY_NAME" class="textfield" value="{{equipment.COMPANY_NAME}}" disabled></td>
+							<td><input type="text" name="REMARK" class="textfield" value="{{equipment.REMARK}}"disabled ></td>							
+							<td class="del_row"><img src = "static/images/delete.png" class="del_row_img" onclick="delete_row(this)"></td>
+						</tr>
+						{% endfor %}
+					</table>
+					<div class="add_row_button">
+					<button id="add_row1" type="button" class="btn btn-sm btn-primary col-sm-2 btn_row" onclick="add_row(this)">Add Row</button>
+					</div>
+					<hr size="10">
+				</div>
+			</div>
+		</div>
+		<hr size="10">
+		<div id="action_row">
+			<button id="instrumnetupdtbtn" name="instrumnetupdtbtn" type="submit" class="btn btn-sm btn-success col-sm-2" onclick="updateinstrumentDetails()">Submit</button>
+		</div>
+	</div>
+
+<my-footer></my-footer>
+<script>
+$( document ).ready(function() {
+		var role = "{{ role }}";
+		handle_nav_bar(role);
+	});
+</script>
+</body>
+
+</html>

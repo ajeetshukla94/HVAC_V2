@@ -1,0 +1,93 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PIN POINT ENGINEERS</title>
+	<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css">
+	<script src="static/js/jquery-3.4.1.min.js"></script>
+	<script defer src="static/js/script1.js"></script>
+	<script type=module defer src="static/js/mainLayout.js"></script>
+	<script src="static/js/nav_handler.js"></script>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+
+<body>
+
+<my-header></my-header>
+
+
+<!-- FRAME SECTION START -->
+	<div id="frame_container">
+		<h5 id = "container_header">Observation Table</h5>
+		<div id="data_frame">
+			<div class="frame">
+				<div class="sections">
+					
+					<label class="form-label col-form-label">Cycle Name</label></td>
+					<input type="text" name="cycle_name" id="cycle_name" value="thermal_report" class="textfield"></td>
+					
+					<label class="form-label col-form-label">Cycle Start Time</label></td>
+					<input type="text" name="started_on" id="started_on" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Time (In Minutes) from Cycle start & Before Hold Duration</label></td>
+					<input type="number" name="cycle_start_time_duration" id="cycle_start_time_duration"  class="textfield"></td>
+
+					<label class="form-label col-form-label">Sterilization Hold Time (In Minutes)</label></td>
+					<input type="number" name="cycle_sterlization_duration" id="cycle_sterlization_duration" class="textfield"></td>
+
+
+					<label class="form-label col-form-label">Duration b/w Hold End Time To Process End Time (In Minutes)</label></td>
+					<input type="number" name="cycle_end_duration" id="cycle_end_duration" class="textfield" ></td>
+
+					<label class="form-label col-form-label">Logging Interval In Seconds</label></td>
+					<input type="number" name="interval_in_seconds" id="interval_in_seconds" class="textfield" ></td>
+					
+					<label class="form-label col-form-label">Min. Temp At the Cycle Start </label></td>
+					<input type="number" name="cycle_start_min" id="cycle_start_min" class="textfield" ></td>
+					
+					<label class="form-label col-form-label">Temperature before Sterilization Start </label></td>
+					<input type="number" name="cycle_start_max" id="cycle_start_max" class="textfield" ></td>
+					
+					<label class="form-label col-form-label">Min. Temp At the Hold Start </label></td>
+					<input type="text" name="sterlization_min" id="sterlization_min" class="textfield" ></td>
+					
+					<label class="form-label col-form-label">Max. Temp At the Hold Start </label></td>
+					<input type="text" name="sterlization_max" id="sterlization_max" class="textfield" ></td>
+					
+					<label class="form-label col-form-label">Temperature After Sterization End </label></td>
+					<input type="number" name="cycle_end_min" id="cycle_end_min" class="textfield" ></td>
+					
+					<label class="form-label col-form-label">Temp At Process End </label></td>
+					<input type="number" name="cycle_end_max" id="cycle_end_max" class="textfield" ></td>
+											
+					<label class="form-label col-form-label">Sensor Quantity</label></td>
+					<input type="number" name="number_of_sensor" id="number_of_sensor" class="textfield" ></td>
+					
+				</div>
+
+				
+				
+			
+			</div>
+		</div>
+		<hr size="10">
+		<div id="action_row">
+			<button id="thermalsubmit" name="thermalsubmit" type="submit" class="btn btn-sm btn-success col-sm-2" onclick="thermal_submit()">Submit</button>
+		</div>
+	</div>
+
+<my-footer></my-footer>
+
+<script>
+$( document ).ready(function() {
+		var role = "{{ role }}";
+		handle_nav_bar(role);
+	});
+</script>
+
+
+</body>
+
+</html>

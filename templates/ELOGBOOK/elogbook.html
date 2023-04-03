@@ -1,0 +1,75 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PIN POINT ENGINEERS</title>
+	<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css">
+	<script src="static/js/jquery-3.4.1.min.js"></script>	
+	<script defer src="static/js/script1.js"></script>
+	<script type=module defer src="static/js/mainLayout.js"></script>
+	<script src="static/js/nav_handler.js"></script>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+
+<body>
+
+<script>
+
+
+
+
+</script>
+
+
+
+<my-header></my-header>
+
+
+<!-- FRAME SECTION START -->
+	<div id="frame_container">
+		<h5 id = "container_header">Equipment Details Table</h5>
+		<div id="data_frame">
+			<div class="frame">
+				<div class="sections">
+					<table class="code_tbl table-striped table-bordered">
+						<tr>
+							<th>SR_NO_ID</th>	
+							<th>STATUS</th>	
+							<th>ISSUED TO </th>		
+							<th>COMPANY NAME</th>	
+							<th>REMARK</th>		
+							<th>TIMESTAMP</th>								
+						</tr>
+						{% for log in logbook %}
+						<tr>
+							<td><input type="text" class="textfield" value="{{log.SR_NO_ID}}" disabled></td>	
+							<td><input type="text" class="textfield" value="{{log.STATUS}}" disabled></td>
+							<td><input type="text" class="textfield" value="{{log.ISSUED_TO}}" disabled></td>							
+							<td><input type="text" class="textfield" value="{{log.COMPANY_NAME}}"disabled ></td>	
+							<td><input type="text" class="textfield" value="{{log.REMARK}}" disabled></td>
+							<td><input type="text" class="textfield" value="{{log.update_time}}"disabled ></td>
+							</tr>
+						{% endfor %}
+					</table>
+					<hr size="10">
+				<div id="action_row">
+			     <button id="submit_button" type="submit" class="btn btn-sm btn-success col-sm-2" onclick="export_logbook()">EXPORT LOGBOOK</button>
+				</div>
+				</div>
+			</div>
+		</div>
+		<hr size="10">
+	</div>
+
+<my-footer></my-footer>
+<script>
+$( document ).ready(function() {
+		var role = "{{ role }}";
+		handle_nav_bar(role);
+	});
+</script>
+</body>
+
+</html>

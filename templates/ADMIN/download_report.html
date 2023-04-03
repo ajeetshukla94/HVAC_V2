@@ -1,0 +1,100 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PIN POINT ENGINEERS</title>
+	<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css">
+	<script src="static/js/jquery-3.4.1.min.js"></script>	
+	<script defer src="static/js/script1.js"></script>
+	<script type=module defer src="static/js/mainLayout.js"></script>
+	<script src="static/js/nav_handler.js"></script>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+
+<body>
+<my-header></my-header>
+
+
+<!-- FRAME SECTION START -->
+	<div id="frame_container">
+		<h5 id = "container_header">Report Table</h5>
+		<div id="data_frame">
+			<div class="frame">
+				<div class="sections">
+					<table class="code_tbl table-striped table-bordered">
+						<tr>
+						    <th>Company Name</th>
+							<th>User Name</th>
+							<th>Report Type</th>		
+							<th>Report Number</th>	
+							<th>Room Name\Euipment Name</th>	
+							<th>Start Date</th>
+							<th>End Date</th>	
+						
+						</tr>	
+						<tr>						
+							<td>
+								<select class="textfield" name="companyname" id="companyname" style="width:100%">
+								<option value="ALL" selected>ALL</option>
+								{% for company in company_list %}
+									<option value="{{company}}">{{company}}</option>
+								{% endfor %}					
+								</select>
+							</td>	
+							<td>
+								<select class="textfield" name="USERNAME" id="USERNAME" style="width:100%">
+								<option value="ALL" selected>ALL</option>
+								{% for username in usernameList %}
+									<option value="{{username}}">{{username}}</option>
+								{% endfor %}					
+								</select>
+							</td>
+							<td>
+								<select class="textfield" name="reporttype" id="reporttype" style="width:100%">
+								<option value="ALL" selected>ALL</option>
+								<option value="AIR VELOCITY">AIR VELOCITY</option>
+								<option value="Particle Count Report">Particle Count Report</option>
+								<option value="PAO REPORT">PAO REPORT</option>								
+								</select>
+							</td>									
+							<td><input type="text" name="reportnumber" id="reportnumber" value="" class="textfield" ></td>
+							<td><input type="text" name="room_name" id="room_name" value="" class="textfield" ></td>
+							<td><input type="date" name="startdate" id="startdate" placeholder="dd/mm/yyyy"  ></td>
+							<td><input type="date" name="enddate" id="enddate" placeholder="dd/mm/yyyy" ></td>
+						
+							
+						<td>
+							<button id="submit_button" type="submit" class="btn btn-sm btn-success col-sm-6" style="width:100%" onclick="view_report_log()">VIEW REPORT</button>																	
+						</td>
+						</tr>
+					</table>	
+					<hr size="10">
+					
+					
+					<table class="code_tbl table-striped table-bordered" id="ReportTable" name="ReportTable">
+							
+					</table>
+					<div id="action_row">
+						<button id="DownlodReportbtn" type="DownlodReportbtn" class="btn btn-sm btn-success col-sm-2" onclick="DownlodReport()">Downlod Report</button>
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+		<hr size="10">
+	</div>
+
+<my-footer></my-footer>
+<script>
+$( document ).ready(function() {
+		var role = "{{ role }}";
+		handle_nav_bar(role);
+				$('#DownlodReportbtn').hide();
+	});
+</script>
+</body>
+
+</html>

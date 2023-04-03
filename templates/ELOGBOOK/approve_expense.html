@@ -1,0 +1,124 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PIN POINT ENGINEERS</title>
+	<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css">
+	<script src="static/js/jquery-3.4.1.min.js"></script>	
+	<script defer src="static/js/script1.js"></script>
+	<script type=module defer src="static/js/mainLayout.js"></script>
+	<script src="static/js/nav_handler.js"></script>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+
+<body>
+<my-header></my-header>
+
+
+<!-- FRAME SECTION START -->
+	<div id="frame_container">
+		<h5 id = "container_header">Expense Details Table</h5>
+		<div id="data_frame">
+			<div class="frame">
+				<div class="sections">
+					<table class="code_tbl table-striped table-bordered">
+						<tr>
+						    <th>USERNAME</th>
+							<th>Expense Type</th>		
+							<th>Company Name</th>	
+							<th>STATUS</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th>ACTION</th>	
+						
+						</tr>	
+						<tr>						
+							<td>
+								<select class="textfield" name="USERNAME" id="USERNAME" style="width:100%">
+								<option value="ALL" selected>ALL</option>
+								{% for username in usernameList %}
+									<option value="{{username}}">{{username}}</option>
+								{% endfor %}					
+								</select>
+							</td>	
+							<td>
+								<select class="textfield" name="Expensetype" id="Expensetype" style="width:100%">
+								<option value="ALL" selected>ALL</option>
+								<option value="Travel">Travel</option>
+								<option value="Food">Food</option>
+								<option value="Miscellaneous">Miscellaneous</option>								
+								</select>
+							</td>
+									
+						    <td>
+							<select class="textfield" name="company_name" id="company_name" style="width:100%">
+							<option value="ALL" selected>ALL</option>
+							{% for company in company_list %}
+							<option value="{{company}}">{{company}}</option>
+							{% endfor %}					
+							</select>
+							</td>	
+							<td>
+								<select class="textfield" name="STATUS" id="STATUS" style="width:100%">
+								<option value="" selected>Select an option</option>
+								<option value="REQUESTED">REQUESTED</option>
+								<option value="APPROVED">APPROVED</option>	
+                                <option value="DENIED">DENIED</option>									
+								</select>
+							</td>
+							<td><input type="date" name="startdate" id="startdate" placeholder="dd/mm/yyyy"  ></td>
+							<td><input type="date" name="enddate" id="enddate" placeholder="dd/mm/yyyy" ></td>
+						<td>
+							<button id="submit_button" type="submit" class="btn btn-sm btn-success col-sm-6" style="width:100%" onclick="view_expense()">VIEW EXPENSE</button>																	
+						</td>
+						</tr>
+					</table>	
+					<hr size="10">
+					
+					
+					<table class="code_tbl table-striped table-bordered" id="EXPENSETABLE" name="EXPENSETABLE">
+						<tr>
+						    <th>Request ID</th>
+						    <th>Expense Type</th>
+							<th>Company Name</th>
+							<th>Description</th>	
+							<th>Amount Requested</th>
+							<th>Amount Approved</th>
+							<th>Date</th>
+							<th>Status</th>
+						</tr>	
+					</table>
+					<br>
+					<table class="code_tbl table-striped table-bordered">
+						<tr>
+						    <th>TOTAL EXPENSE APPROVED</th>
+							<th>TOTAL EXPENSE DENIED</th>																
+						</tr>	
+						<tr>						
+							<td><input type="text" name="approved" id="approved" class="textfield" disabled></td>
+							<td><input type="text" name="declined" id="declined" class="textfield" disabled></td>
+						</tr>
+					</table>	
+				</div>
+				
+				
+			</div>
+		</div>
+		<hr size="10">
+		<div id="action_row">
+			<button id="expense_submit_button" name="expense_submit_button" type="submit" class="btn btn-sm btn-success col-sm-2" onclick="submit_expense()">Submit</button>
+		</div>
+	</div>
+
+<my-footer></my-footer>
+<script>
+$( document ).ready(function() {
+		var role = "{{ role }}";
+		handle_nav_bar(role);
+	});
+</script>
+</body>
+
+</html>
