@@ -1,0 +1,95 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PIN POINT ENGINEERS</title>
+	<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css">
+	<script src="static/js/jquery-3.4.1.min.js"></script>	
+	<script defer src="static/js/script1.js"></script>
+	<script type=module defer src="static/js/mainLayout.js"></script>
+	<script src="static/js/nav_handler.js"></script>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+
+<body>
+<my-header></my-header>
+
+
+<!-- FRAME SECTION START -->
+	<div id="frame_container">
+		<h5 id = "container_header">Request Equipment </h5>
+		<div id="data_frame">
+			<div class="frame">
+				<div class="sections">
+					<br><br>
+					<table class="code_tbl table-striped table-bordered" >
+					<input type="text" class="textfield"  id="myInput1" onkeyup="filterInstrument(1,'myInput1')" placeholder="Search here Type..">
+					<input type="text" class="textfield"  id="myInput2" onkeyup="filterInstrument(2,'myInput2')" placeholder="Search here EQUIPMENT NAME..">
+					<input type="text" class="textfield"  id="myInput3" onkeyup="filterInstrument(3,'myInput3')" placeholder="Search here MAKE..">
+					<input type="text" class="textfield"  id="myInput4" onkeyup="filterInstrument(4,'myInput4')" placeholder="Search here MODEL NUMBER..">
+					<input type="text" class="textfield"  id="myInput5" onkeyup="filterInstrument(5,'myInput5')" placeholder="Search here SR_NO_ID..">
+					</table>
+					<br>
+					<br>
+					<table class="code_tbl table-striped table-bordered" id ="eqp_table">
+					
+						<tr>
+						    <th>Selected</th>
+							<th>Type</th>	
+							<th>EQUIPMENT_NAME</th>
+							<th>MAKE</th>	
+							<th>MODEL NUMBER</th>	
+							<th>SR_NO_ID</th>									
+						</tr>
+						{% for equipment in equipment_list %}
+						<tr>
+						    <td><input type="checkbox" id="selected_eq" class="textfield" name="selected_eq" value="{{equipment.SR_NO_ID}}"></td>
+							<td><input type="text" name="Type" id="Type" class="textfield" value="{{equipment.Type}}"disabled ></td>	
+							<td><input type="text" name="EQUIPMENT_NAME" id="EQUIPMENT_NAME" class="textfield" value="{{equipment.EQUIPMENT_NAME}}" disabled></td>
+							<td><input type="text" name="MAKE" id="MAKE" class="textfield" value="{{equipment.MAKE}}" disabled></td>							
+							<td><input type="text" name="MODEL_NUMBER" id="MODEL_NUMBER" class="textfield" value="{{equipment.MODEL_NUMBER}}"disabled ></td>	
+							<td><input type="text" name="SR_NO_ID" id="SR_NO_ID"  class="textfield" value="{{equipment.SR_NO_ID}}" disabled></td>
+						</tr>
+						
+						{% endfor %}
+					</table>	
+
+					<table class="table-striped table-bordered">
+					<tr>
+					     <th>COMPANY NAME</th>
+					      <th>REMARK</th>	
+					</tr>
+					    <tr>
+						    <td>
+							<select class="textfield" name="company_name" id="company_name" style="width:100%">
+							<option value="" selected>Select an option</option>
+							{% for company in company_list %}
+								<option value="{{company}}">{{company}}</option>
+							{% endfor %}					
+							</select>
+							</td>	
+							<td><input type="text" name="remark" id="remark" class="textfield" value=""></td>
+						</tr>				
+					</table>
+					<hr size="10">
+				</div>
+			</div>
+		</div>
+		<hr size="10">
+		<div id="action_row">
+			<button id="submit_button" type="submit" class="btn btn-sm btn-success col-sm-2" onclick="request_instrument()">Submit</button>
+		</div>
+	</div>
+
+<my-footer></my-footer>
+<script>
+$( document ).ready(function() {
+		var role = "{{ role }}";
+		handle_nav_bar(role);
+	});
+</script>
+</body>
+
+</html>

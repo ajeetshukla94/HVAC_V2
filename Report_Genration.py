@@ -64,49 +64,50 @@ class Report_Genration:
         self = self
 
     @staticmethod
-    def generate_report_air_velocity(data, basic_details,user):
-        sr_no = basic_details['sr_no']
-        company_name = basic_details['company_name']
-        room_volume = basic_details['room_volume']
-        room_name = basic_details['room_name']
-        ahu_number = basic_details['ahu_number']
-        test_taken = basic_details['Test_taken']
-        locatiom = basic_details['location']
-        grade = basic_details['grade']
+    def generate_report_air_velocity(data, basic_details,user,userid):
+        sr_no         = basic_details['sr_no']
+        company_name  = basic_details['company_name']
+        room_volume   = basic_details['room_volume']
+        room_name     = basic_details['room_name']
+        ahu_number    = basic_details['ahu_number']
+        test_taken    = datetime.datetime.today().strftime('%d/%m/%Y')
+        test_taken    = basic_details['Test_taken']
+        location      = basic_details['Department']
+        grade         = basic_details['grade']
         acph_thresold = basic_details['acph_thresold']
         company_name_val = company_name
-        SR_NO_val = sr_no
-        test_date = test_taken
+        SR_NO_val     = sr_no
+        test_date     = test_taken
 
-        temp_df = dbo.get_company_details_by_company_name(company_name)
-        report_number = temp_df.REPORT_NUMBER.values[0]
-        customer_address = temp_df.ADDRESS.values[0]
-        temp_df = dbo.get_equipment_by_id(SR_NO_val) 
-        INSTRUMENT_NAME = temp_df.EQUIPMENT_NAME.values[0]
-        MAKE = temp_df.MAKE.values[0]
-        MAKE_MODEL = temp_df.MODEL_NUMBER.values[0]
-        done_date = temp_df.DONE_DATE.values[0].split()[0]
-        due_date = temp_df.DUE_DATE.values[0].split()[0]
-        VALIDITY = temp_df.DUE_DATE.values[0].replace("-","/").split()[0]
-        Nature_of_test = "AIR VELOCITY"
-        location = locatiom
-        customer_name = company_name_val
-        Test_taken = test_date
-        ahu_number = ahu_number
-        SRNO = SR_NO_val
+        temp_df             = dbo.get_company_details_by_company_name(company_name)
+        report_number       = temp_df.REPORT_NUMBER.values[0]
+        customer_address    = temp_df.ADDRESS.values[0]
+        
+        temp_df             = dbo.get_equipment(SR_NO_val) 
+        INSTRUMENT_NAME     = temp_df.EQUIPMENT_NAME.values[0]
+        MAKE                = temp_df.MAKE.values[0]
+        MAKE_MODEL          = temp_df.MODEL_NUMBER.values[0]
+        done_date           = temp_df.DONE_DATE.values[0].split()[0]
+        due_date            = temp_df.DUE_DATE.values[0].split()[0]
+        VALIDITY            = temp_df.DUE_DATE.values[0].replace("-","/").split()[0]
+        
+        Nature_of_test      = "AIR VELOCITY"
+        customer_name       = company_name_val
+        Test_taken          = test_date
+        SRNO                = SR_NO_val
 
-        compan_name = company_name_val
-        compan_name = compan_name.replace(".", "")
-        compan_name = compan_name.replace("/", "")
-        compan_name = compan_name.replace(" ", "")
+        compan_name         = company_name_val
+        compan_name         = compan_name.replace(".", "")
+        compan_name         = compan_name.replace("/", "")
+        compan_name         = compan_name.replace(" ", "")
 
-        working_directory = MYDIR + "/" +"static/Report/AIR_VELOCITY_REPORT/{}"
+        working_directory   = MYDIR + "/" +"static/Report/AIR_VELOCITY_REPORT/{}"
         final_working_directory = "static/Report/AIR_VELOCITY_REPORT/{}/{}.xlsx"
-        file_name = "{}_AIR_VELOCOTY_REPORT_{}".format(room_name, str(datetime.datetime.today().strftime('%d_%m_%Y')))
+        file_name           = "{}_AIR_VELOCOTY_REPORT_{}".format(room_name, str(datetime.datetime.today().strftime('%d_%m_%Y')))
         if not os.path.exists(working_directory.format(compan_name)):
             os.mkdir(working_directory.format(compan_name));
 
-        store_location = final_working_directory.format(compan_name, file_name)
+        store_location          = final_working_directory.format(compan_name, file_name)
         final_working_directory = MYDIR + "/" +final_working_directory.format(compan_name, file_name)
         print(final_working_directory)
 
@@ -115,7 +116,7 @@ class Report_Genration:
         ws = wb.active
         ws.protection.sheet = False
 
-        if grade=="A":
+        if grade=="A" or grade=="ISO 5":
             wb = load_workbook(os.path.join("static/inputData/Template/",'Air_velocity_template_grade_a.xlsx'))
             ws = wb.active
             ws.protection.sheet = False
@@ -123,27 +124,26 @@ class Report_Genration:
         # Data can be assigned directly to cells
         ws['F3'] = str(company_name_val)
         ws['F4'] = customer_address
-        ws['F5'] = str(Nature_of_test)
-        ws['F6'] = str(Test_taken)
-        ws['F7'] = str(ahu_number)
-        ws['F8'] = str(location)
+        #ws['F5'] = str(Nature_of_test)
+        ws['F5'] = str(Test_taken)
+        ws['F6'] = str(ahu_number)
+        ws['F7'] = str(location)
         
         report_counter  = dbo.get_report_number(Nature_of_test,Test_taken,str(company_name_val))
         report_counter  = report_counter+1
-        temp_date = Test_taken.replace("/","")        
-        report_number = str("PPE{}AV{}{}".format(report_number,temp_date,report_counter))
-        ws['F9'] = report_number
+        temp_date       = Test_taken.replace("/","")        
+        report_number   = str("PPE{}AV{}{}".format(report_number,temp_date,report_counter))
         
-        ws['B15'] = str(INSTRUMENT_NAME)
-        ws['E15'] = str(MAKE_MODEL)
-        ws['I15'] = str(SRNO)
-        ws['M15'] = str(VALIDITY.replace("-", "/"))
+        ws['F8']  = report_number
+        ws['B14'] = str(INSTRUMENT_NAME)
+        ws['E14'] = str(MAKE_MODEL)
+        ws['I14'] = str(SRNO)
+        ws['M14'] = str(VALIDITY.replace("-", "/"))
 
-        ws.merge_cells(start_row=21, start_column=2, end_row=21, end_column=3)
-        # ws.merge_cells(start_row=23, start_column=3, end_row=23, end_column=4)
-        ws.merge_cells(start_row=21, start_column=15, end_row=21, end_column=16)
+        ws.merge_cells(start_row=19, start_column=2, end_row=19, end_column=3)
+        ws.merge_cells(start_row=19, start_column=15, end_row=19, end_column=16)
 
-        row = 22
+        row = 20
         data['AVG_Velocity'] = data.apply(sum_velocty, axis=1)
         if (grade=="A") or (grade=="ISO 5"):
             data['CFM'] = data.apply(lambda x: int(x['AVG_Velocity']), axis=1)
@@ -159,15 +159,11 @@ class Report_Genration:
             ACPH_VALUE  = float((Total_cfm * 60)) / float(room_volume)
             ACPH_VALUE  = round(ACPH_VALUE,2)
 
-        # set_border(ws, "B16:M17")
         for row_data in data.itertuples():
             
           
             if (grade=="A") or (grade=="ISO 5"):
-                #ws.merge_cells(start_row=row, start_column=4, end_row=row, end_column=5)
                 ws["D" + str(row)] = row_data.Label_number
-                #currentCell = ws["D" + str(row)]
-                #currentCell.alignment = Alignment(horizontal='center', vertical='center')
                 ws.merge_cells(start_row=row, start_column=5, end_row=row, end_column=6)
                 ws.merge_cells(start_row=row, start_column=7, end_row=row, end_column=8)
                 ws.merge_cells(start_row=row, start_column=9, end_row=row, end_column=10)
@@ -183,8 +179,8 @@ class Report_Genration:
                 ws["O" + str(row)] = row_data.AVG_Velocity
             else:
                 ws.merge_cells(start_row=row, start_column=4, end_row=row, end_column=5)
-                ws["D" + str(row)] = row_data.Label_number
-                currentCell = ws["D" + str(row)]
+                ws["D" + str(row)]    = row_data.Label_number
+                currentCell           = ws["D" + str(row)]
                 currentCell.alignment = Alignment(horizontal='center', vertical='center')
                 ws["F" + str(row)] = row_data.V1
                 ws["G" + str(row)] = row_data.V2
@@ -197,25 +193,25 @@ class Report_Genration:
         
             row += 1
 
-        ws.merge_cells(start_row=22, start_column=2, end_row=row - 1, end_column=3)
-        ws['B22'] = room_name
-     
+        ws.merge_cells(start_row=20, start_column=2, end_row=row - 1, end_column=3)
+        
+        ws['B20'] = room_name
         
         if (grade=="A") or (grade=="ISO 5"):
             pass
         else:
-            ws.merge_cells(start_row=22, start_column=14, end_row=row - 1, end_column=14)
-            ws['N22'] = room_volume
-            ws.merge_cells(start_row=22, start_column=15, end_row=row - 1, end_column=16)
-            ws['O22'] = ACPH_VALUE
+            ws.merge_cells(start_row=20, start_column=14, end_row=row - 1, end_column=14)
+            ws['N20'] = room_volume
+            ws.merge_cells(start_row=20, start_column=15, end_row=row - 1, end_column=16)
+            ws['O20'] = ACPH_VALUE
 
-        currentCell = ws['B22']
+        currentCell = ws['B20']
         currentCell.alignment = Alignment(horizontal='center', vertical='center',wrap_text=True)
 
-        currentCell = ws['N22']
+        currentCell = ws['N20']
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
-        currentCell = ws['O22']
+        currentCell = ws['O20']
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
         if (grade=="A") or (grade=="ISO 5"):
             ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=16)
@@ -232,7 +228,10 @@ class Report_Genration:
         row = row + 1
 
         ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=9)
-        ws["B" + str(row)] = "Acceptance criteria :Not less Than {} ACPH".format(str(acph_thresold))
+        if (grade=="A") or (grade=="ISO 5"):
+            ws["B" + str(row)] = "Acceptance criteria : NMT 90\u00B1 20 % ( 72 TO 108 FPM)".format(str(acph_thresold))
+        else: 
+            ws["B" + str(row)] = "Acceptance criteria :Not less Than {} ACPH".format(str(acph_thresold))
 
         currentCell = ws["B" + str(row)]
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
@@ -264,6 +263,12 @@ class Report_Genration:
 
         ws.merge_cells(start_row=(row + 3), start_column=2, end_row=(row + 7), end_column=7)
         ws.merge_cells(start_row=(row + 3), start_column=8, end_row=(row + 7), end_column=16)
+        
+        testtime = datetime.datetime.now(tz=gettz('Asia/Kolkata'))
+        testtime = str(testtime.strftime('%d/%m/%Y %H:%M:%S')).split(" ")[0]
+        ws["B" + str(row + 3)]= "Electronically Signed by {} on {} ".format(user, testtime)
+        currentCell = ws["B" + str(row + 3)]
+        currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
         # if data.shape[0]==1:
         #    row =row +1
@@ -288,44 +293,47 @@ class Report_Genration:
         testtime = str(testtime.strftime('%d/%m/%Y %H:%M:%S')).split(".")[0]
 
         #ws["B" + str(row + 9)] = "Report Prepared by {} on {}".format(user, testtime)
-        ws["B" + str(row + 9)] = "Report Prepared by {} ".format(user)
-        set_border(ws, 'B1:P' + str(row + 9))
+        #ws["B" + str(row + 9)] = "Report Prepared by {} ".format(user)
+        set_border(ws, 'B1:P' + str(row + 8))
         set_border(ws, 'B1:P' + str(1))
 
         wb.save(final_working_directory)
-        dbo.insert_file(Nature_of_test,report_number,user,Test_taken,testtime,str(company_name_val),location,final_working_directory)
+        dbo.insert_file(Nature_of_test,report_number,userid,Test_taken,testtime,str(company_name_val),location,final_working_directory)
         return file_name, store_location
-
+        
+        
     @staticmethod
-    def generate_report_pao(data, basic_details,user):
-        sr_no = basic_details['sr_no']
-        company_name = basic_details['company_name']
-        room_name = basic_details['room_name']
-        ahu_number = basic_details['ahu_number']
-
-        test_taken = basic_details['Test_taken']
-        locatiom = basic_details['location']
-        compresed_value = basic_details['compresed_value']
-        check_val = basic_details['check_val']
+    def generate_report_pao(data, basic_details,user,userid):
+    
+    
+        sr_no            = basic_details['sr_no']
+        company_name     = basic_details['company_name']
+        room_name        = basic_details['room_name']
+        ahu_number       = basic_details['ahu_number']
+        test_taken       = datetime.datetime.today().strftime('%d/%m/%Y')
+        locatiom         = basic_details['location']
+        compresed_value  = basic_details['compresed_value']
+        check_val        = basic_details['check_val']
+        test_taken       = basic_details['Test_taken']
+        regent_used      = basic_details['regent_used']
         company_name_val = company_name
-        SR_NO_val = sr_no
-        test_date = test_taken
-
-        temp_df = dbo.get_company_details_by_company_name(company_name_val)
-        report_number = temp_df.REPORT_NUMBER.values[0]
+        SR_NO_val        = sr_no
+        test_date        = test_taken
+        temp_df          = dbo.get_company_details_by_company_name(company_name_val)
+        report_number    = temp_df.REPORT_NUMBER.values[0]
         customer_address = temp_df.ADDRESS.values[0]
-        temp_df = dbo.get_equipment_by_id(SR_NO_val) 
-        INSTRUMENT_NAME = temp_df.EQUIPMENT_NAME.values[0]
-        MAKE = temp_df.MAKE.values[0]
-        MAKE_MODEL = temp_df.MODEL_NUMBER.values[0]
-        done_date = temp_df.DONE_DATE.values[0].split()[0]
-        due_date = temp_df.DUE_DATE.values[0].split()[0]
-        VALIDITY = temp_df.DUE_DATE.values[0].replace("-","/").split()[0]
-        Nature_of_test = "PAO REPORT"
-        location = locatiom
-        customer_name = company_name_val
-        Test_taken = test_date
-        SRNO = SR_NO_val
+        temp_df          = dbo.get_equipment(SR_NO_val) 
+        INSTRUMENT_NAME  = temp_df.EQUIPMENT_NAME.values[0]
+        MAKE             = temp_df.MAKE.values[0]
+        MAKE_MODEL       = temp_df.MODEL_NUMBER.values[0]
+        done_date        = temp_df.DONE_DATE.values[0].split()[0]
+        due_date         = temp_df.DUE_DATE.values[0].split()[0]
+        VALIDITY         = temp_df.DUE_DATE.values[0].replace("-","/").split()[0]
+        Nature_of_test   = "PAO REPORT"
+        location         = locatiom
+        customer_name    = company_name_val
+        Test_taken       = test_date
+        SRNO             = SR_NO_val
 
         compan_name = company_name_val
         compan_name = compan_name.replace(".", "")
@@ -349,12 +357,11 @@ class Report_Genration:
         # Data can be assigned directly to cells
         ws['F3'] = str(company_name_val)
         ws['F4'] = customer_address
-        ws['F5'] = str(Nature_of_test)
-        ws['F6'] = str(Test_taken)
+        #ws['F5'] = str(Nature_of_test)
+        ws['F5'] = str(Test_taken)
+        ws['F6'] = str(regent_used)
         ws['F7'] = str(ahu_number)
-        ws['F8'] = str(location)
-        #ws['F9'] = str(done_date).replace("-", "/")
-        #ws['F10'] = str(due_date).replace("-", "/")
+        ws['F9'] = str(location)
         report_counter  = dbo.get_report_number(Nature_of_test,Test_taken,str(company_name_val))
         report_counter  = report_counter+1
         temp_date = Test_taken.replace("/","")        
@@ -366,7 +373,7 @@ class Report_Genration:
         ws['I15'] = str(SRNO)
         ws['M15'] = str(VALIDITY.replace("-", "/"))
 
-        row = 22
+        row = 21
 
         for row_data in data.itertuples():
             ws.merge_cells(start_row=row, start_column=4, end_row=row, end_column=5)
@@ -391,10 +398,10 @@ class Report_Genration:
 
             row += 1
 
-        ws.merge_cells(start_row=22, start_column=2, end_row=row - 1, end_column=3)
-        ws['B22'] = room_name
+        ws.merge_cells(start_row=21, start_column=2, end_row=row - 1, end_column=3)
+        ws['B21'] = room_name
 
-        currentCell = ws['B22']
+        currentCell = ws['B21']
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
         ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=16)
@@ -428,6 +435,15 @@ class Report_Genration:
 
         ws.merge_cells(start_row=(row + 3), start_column=2, end_row=(row + 7), end_column=7)
         ws.merge_cells(start_row=(row + 3), start_column=8, end_row=(row + 7), end_column=16)
+        
+        
+        
+        
+        testtime = datetime.datetime.now(tz=gettz('Asia/Kolkata'))
+        testtime = str(testtime.strftime('%d/%m/%Y %H:%M:%S')).split(" ")[0]
+        ws["B" + str(row + 3)]= "Electronically Signed by {} on {} ".format(user, testtime)
+        currentCell = ws["B" + str(row + 3)]
+        currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
         # if data.shape[0]==1:
         #    row =row +1
@@ -449,20 +465,19 @@ class Report_Genration:
         ws.merge_cells(start_row=(row + 9), start_column=2, end_row=(row + 9), end_column=16)
         testtime = datetime.datetime.now(tz=gettz('Asia/Kolkata'))
         testtime = str(testtime.strftime('%d/%m/%Y %H:%M:%S')).split(".")[0]
-        #ws["B" + str(row + 9)] = "Test Prepared out by {} on {}".format(user,testtime)
-        ws["B" + str(row + 9)] = "Report Prepared by {} ".format(user)
+        #ws["B" + str(row + 9)] = "Report Prepared by {} ".format(user)
 
 
-        set_border(ws, 'B1:P' + str(row + 9))
+        set_border(ws, 'B1:P' + str(row + 8))
         set_border(ws, 'B1:P' + str(1))
 
         wb.save(final_working_directory)
-        dbo.insert_file(Nature_of_test,report_number,user,Test_taken,testtime,str(company_name_val),location,final_working_directory)
+        dbo.insert_file(Nature_of_test,report_number,userid,Test_taken,testtime,str(company_name_val),location,final_working_directory)
 
         return file_name, store_location
-
+        
     @staticmethod
-    def generate_report_particle_count(data, basic_details,user,EUGMP_guidlines,ISO_guidlines_master):
+    def generate_report_particle_count(data, basic_details,user,userid,EUGMP_guidlines,ISO_guidlines_master):
         sr_no = basic_details['sr_no']
         company_name = basic_details['company_name']
         room_name = basic_details['room_name']
@@ -479,7 +494,7 @@ class Report_Genration:
         temp_df = dbo.get_company_details_by_company_name(company_name_val)
         report_number = temp_df.REPORT_NUMBER.values[0]
         customer_address = temp_df.ADDRESS.values[0]
-        temp_df = dbo.get_equipment_by_id(SR_NO_val) 
+        temp_df = dbo.get_equipment(SR_NO_val) 
         INSTRUMENT_NAME = temp_df.EQUIPMENT_NAME.values[0]
         MAKE = temp_df.MAKE.values[0]
         MAKE_MODEL = temp_df.MODEL_NUMBER.values[0]
@@ -521,11 +536,11 @@ class Report_Genration:
         # Data can be assigned directly to cells
         ws['F3'] = str(company_name_val)
         ws['F4'] = customer_address
-        ws['F5'] = str(Nature_of_test)
-        ws['F6'] = str(Test_taken)
-        ws['F7'] = str(condition)
-        ws['F8'] = str(ahu_number)
-        ws['F9'] = str(location)
+        #ws['F5'] = str(Nature_of_test)
+        ws['F5'] = str(Test_taken)
+        ws['F6'] = str(condition)
+        ws['F7'] = str(ahu_number)
+        ws['F8'] = str(location)
         #ws['F9'] = str(done_date).replace("-", "/")
         #ws['F10'] = str(due_date).replace("-", "/")
         
@@ -533,15 +548,15 @@ class Report_Genration:
         report_counter  = report_counter+1
         temp_date = Test_taken.replace("/","")        
         report_number = str("PPE{}PC{}{}".format(report_number,temp_date,report_counter))
-        ws['F10'] = report_number
+        ws['F9'] = report_number
         
 
-        ws['B16'] = str(INSTRUMENT_NAME)
-        ws['E16'] = str(MAKE_MODEL)
-        ws['I16'] = str(SRNO)
-        ws['M16'] = str(VALIDITY.replace("-", "/"))
+        ws['B15'] = str(INSTRUMENT_NAME)
+        ws['E15'] = str(MAKE_MODEL)
+        ws['I15'] = str(SRNO)
+        ws['M15'] = str(VALIDITY.replace("-", "/"))
 
-        row = 22
+        row = 20
 
         for row_data in data.itertuples():
             ws.merge_cells(start_row=row, start_column=5, end_row=row, end_column=7)
@@ -566,11 +581,11 @@ class Report_Genration:
 
             row += 1
 
-        ws.merge_cells(start_row=22, start_column=2, end_row=row - 1, end_column=4)
-        ws['B22'] = room_name
-        currentCell = ws['B22']
+        ws.merge_cells(start_row=20, start_column=2, end_row=row - 1, end_column=4)
+        ws['B20'] = room_name
+        currentCell = ws['B20']
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
-        currentCell = ws['D22']
+        currentCell = ws['D20']
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
         data.zeor_point_five = data.zeor_point_five.astype("float")
         data.five_point_zero = data.five_point_zero.astype("float")
@@ -670,6 +685,12 @@ class Report_Genration:
 
         ws.merge_cells(start_row=(row + 3), start_column=2, end_row=(row + 7), end_column=7)
         ws.merge_cells(start_row=(row + 3), start_column=8, end_row=(row + 7), end_column=16)
+        
+        testtime = datetime.datetime.now(tz=gettz('Asia/Kolkata'))
+        testtime = str(testtime.strftime('%d/%m/%Y %H:%M:%S')).split(" ")[0]
+        ws["B" + str(row + 3)]= "Electronically Signed by {} on {} ".format(user, testtime)
+        currentCell = ws["B" + str(row + 3)]
+        currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
         # if data.shape[0]==1:
         #    row =row +1
@@ -693,177 +714,18 @@ class Report_Genration:
         testtime = str(testtime.strftime('%d/%m/%Y %H:%M:%S')).split(".")[0]
 
         #ws["B" + str(row + 9)] = "Test Prepared out by {} on {}".format(user,testtime)
-        ws["B" + str(row + 9)] = "Report Prepared by {} ".format(user)
+        #ws["B" + str(row + 9)] = "Report Prepared by {} ".format(user)
 
         set_border(ws, 'B1:P' + str(row + 8))
         set_border(ws, 'B1:P' + str(1))
 
         wb.save(final_working_directory)
-        dbo.insert_file(Nature_of_test,report_number,user,Test_taken,testtime,str(company_name_val),location,final_working_directory)
+        dbo.insert_file(Nature_of_test,report_number,userid,Test_taken,testtime,str(company_name_val),location,final_working_directory)
+ 
         return file_name, store_location
-        
-        
-    @staticmethod
-    def generate_thermal_report(basic_details):
-    
-        stages                    = ["Cycle start","Sterlization start","sterlization end","cycle End"]
-        cycle_name                = str(basic_details['cycle_name'])
-        Test_started_on           = str(basic_details['started_on'])
-        cycle_start_time_duration = int(basic_details['cycle_start_time_duration'])
-        sterlization_duration     = int(basic_details['cycle_sterlization_duration'])
-        cycle_end_duration        = int(basic_details['cycle_end_duration'])
-        interval_time_in_second   = int(basic_details['interval_in_seconds'])
-        cycle_start_range         = [float(basic_details['cycle_start_min']),float(basic_details['cycle_start_max'])]
-        cycle_end_range           = [float(basic_details['cycle_end_min']),float(basic_details['cycle_end_max'])]
-        number_of_sensor          = int(basic_details['number_of_sensor'])
-        format_date               = datetime.datetime.strptime(Test_started_on, '%d-%m-%Y %H:%M:%S')
-        Test_conducted_on         = str(format_date).split()[0]
-        Test_conducted_on         = datetime.datetime.strptime(Test_conducted_on, "%Y-%m-%d").strftime("%d-%m-%Y")
-        Test_conducted_on         = str(Test_conducted_on)
-        sterlization_min_range    = str(basic_details['sterlization_min']).split(",")
-        sterlization_max_range    = str(basic_details['sterlization_max']).split(",")
-        
-       
-        
-        cycle_start_time = str(format_date)
-        sterlization_start_time = format_date + datetime.timedelta(minutes=cycle_start_time_duration)
-        sterlization_start_time = str(sterlization_start_time)
-
-        sterlization_end_time = format_date +datetime.timedelta(minutes=cycle_start_time_duration+sterlization_duration)                           
-        sterlization_end_time = str(sterlization_end_time)
 
 
-        cycle_end_time = format_date +datetime.timedelta(minutes=cycle_start_time_duration+sterlization_duration+cycle_end_duration)                           
-        cycle_end_time = str(cycle_end_time)
-        cycle_start_stage = pd.date_range(cycle_start_time        , sterlization_start_time,freq="{}s".format(interval_time_in_second)).strftime('%d-%m-%Y %H:%M:%S')
-        sterliztion_stage = pd.date_range(sterlization_start_time , sterlization_end_time,freq="{}s".format(interval_time_in_second)).strftime('%d-%m-%Y %H:%M:%S')
-        cycle_end_stage   = pd.date_range(sterlization_end_time   , cycle_end_time,freq="{}s".format(interval_time_in_second)).strftime('%d-%m-%Y %H:%M:%S')
-        random_value_list = [0.1,0.2,0.3,-0.1,-0.2,-0.3]
-        
-        record_list =[]
 
-        range_length = len(cycle_start_stage)
-        cycle_start_temp_range = np.linspace(cycle_start_range[0], cycle_start_range[1], num=range_length)
-        counter = 0
-        for i in cycle_start_stage:
-            record = [Test_conducted_on,i]
-            if counter  == range_length-1:
-                counter = counter-1
-            for x in range(number_of_sensor):
-                temp_temperture = random.uniform(cycle_start_temp_range[counter],cycle_start_temp_range[counter+1])
-                temp_temperture = temp_temperture + float(random.choice(random_value_list))
-                temp_temperture = '{0:.1f}'.format(temp_temperture) 
-                record.append(temp_temperture)
-            record.append("Cycle Started")
-            record_list.append(record)
-            counter=counter+1
-            
-            
-        print(len(sterliztion_stage))
-        for i in sterliztion_stage:
-            record = [Test_conducted_on,i]
-            counter = 0
-            for x in range(number_of_sensor):              
-                temp_temperture = float(random.choice(list(np.arange(float(sterlization_min_range[x]), float(sterlization_max_range[x]), 0.1))))
-                temp_temperture = '{0:.1f}'.format(temp_temperture) 
-                record.append(temp_temperture)
-            record.append("In Sterlization Stage")
-            record_list.append(record)
-            
-            counter=counter+1
-    
-        range_length = len(cycle_end_stage)
-        cycle_end_temp_range = np.linspace(cycle_end_range[0], cycle_end_range[1], num=range_length)
-        counter = 0
-        for i in cycle_end_stage:
-            record = [Test_conducted_on,i]
-            if counter  == range_length-1:
-                counter = counter-1
-            for x in range(number_of_sensor):
-                temp_temperture = random.uniform(cycle_end_temp_range[counter],cycle_end_temp_range[counter+1])
-                temp_temperture = temp_temperture + float(random.choice(random_value_list))
-                temp_temperture = '{0:.1f}'.format(temp_temperture) 
-                record.append(temp_temperture)
-            record.append("Cycle Ended")
-            record_list.append(record)
-            counter=counter+1
-            
-         
-     
 
-        working_directory = MYDIR + "/" "static/Report/THERMAL_REPORT/{}"
-        final_working_directory = "static/Report/THERMAL_REPORT/thermal.xlsx"
-        file_name = "{}.xlsx".format(cycle_name)
-        writer = pd.ExcelWriter(final_working_directory, engine='xlsxwriter')
-        
-        
-
-        store_location = final_working_directory
-        final_working_directory = MYDIR + "/"+final_working_directory
-        print(final_working_directory)
-        
-        temp_df = pd.DataFrame(record_list)
-        columns_list = ["DATE","TIME"]
-        for i in  range(1,number_of_sensor+1):
-            columns_list.append("CH{}".format(str(i).zfill(2)))
-        columns_list.append("STAGE")
-        temp_df.columns = columns_list
-        for i in  range(1,number_of_sensor+1):
-            columns_name = ("CH{}".format(str(i).zfill(2)))
-            temp_df[columns_name] =temp_df[columns_name].astype(float)
-        
-        temp_df["DATE"] = "" 
-        temp_df['TIME'] = temp_df['TIME'].astype(str) 
-        temp_df[['DATE','TIME']] = temp_df['TIME'].str.split(' ',expand=True)
-       
-        #temp_df = temp_df.drop_duplicates(['DATE','TIME'],keep='last') 
-        temp_df.to_excel(writer, sheet_name='Raw Data',index=False)
-        trn_df = temp_df[temp_df['STAGE']=="In Sterlization Stage"]
-        trn_df = trn_df.drop('STAGE', axis=1)
-        
-        trn_df_2 = pd.DataFrame()
-        trn_df_2['MIN'] = trn_df.drop(['DATE','TIME'], axis=1).min(axis=1)
-        trn_df_2['MAX'] = trn_df.drop(['DATE','TIME'], axis=1).max(axis=1)
-        trn_df_2['AVG'] = trn_df.drop(['DATE','TIME'], axis=1).mean(axis=1)
-        trn_df_2['AVG'] = trn_df_2['AVG'].round(1)
-        
-        column_list = trn_df.columns.tolist()
-        action_list = ['min','max','mean']
-        record_list = []
-        for action in action_list:
-            record = []
-            record.append(action)
-            for i in range(2,len(column_list)):
-                operation = "round(trn_df[column_list[i]].{}(),1)".format(action)
-                record.append(eval(operation))
-            record_list.append(record) 
-        row_counter = trn_df.shape[0]+1
-        trn_df_3 = pd.DataFrame(record_list)
-        
-        trn_df_4 = trn_df.copy()
-        delta = 60/interval_time_in_second
-        for i in range(2,(len(column_list))):
-            trn_df_4[column_list[i]] =trn_df_4[column_list[i]].astype(float)
-            trn_df_4[column_list[i]] =  ((trn_df_4[column_list[i]]-121)/10)/delta
-            trn_df_4[column_list[i]] =  10** trn_df_4[column_list[i]]
-            trn_df_4[column_list[i]] =  trn_df_4[column_list[i]].round(2)
-            
-        
-        trn_df.to_excel(writer, sheet_name='Hold_Data',index=False)
-        trn_df_2.to_excel(writer, sheet_name='Hold_Data',startcol=len(column_list)+1,index=False)
-        trn_df_3.to_excel(writer, sheet_name='Hold_Data',startrow=row_counter,startcol=1,header=False,index=False)
-        trn_df_4.to_excel(writer, sheet_name='Hold_Data',startrow=row_counter+5,startcol=0,index=False)
-        # column_list = trn_df_4.columns.tolist()
-        # for i in range(2,(len(column_list))):
-            # plt.plot(trn_df_4['TIME'], trn_df_4[column_list[i]])
-        # plt.xticks(rotation=90)
-        # plt.savefig("static/Report/THERMAL_REPORT/thermal.png",dpi=500)
-        # workbook  = writer.book
-        # worksheet = writer.sheets['Hold_Data']
-        # worksheet.insert_image('I{}'.format(row_counter+5), "static/Report/THERMAL_REPORT/thermal.png")
-        
-        writer.save()
-
-        return file_name, store_location
 
 

@@ -1,0 +1,163 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PIN POINT ENGINEERS</title>
+	<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css">
+	<script src="static/js/jquery-3.4.1.min.js"></script>
+	<script defer src="static/js/script1.js"></script>
+	<script type=module defer src="static/js/mainLayout.js"></script>
+	<script src="static/js/nav_handler.js"></script>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+
+<body>
+
+
+
+<my-header></my-header>
+
+<!-- FRAME SECTION START -->
+	<div id="frame_container">
+		<h5 id = "container_header">PAO Observation Table</h5>
+		<div id="data_frame">
+			<div class="frame">
+				<div class="sections">
+				<table class="code_tbl table-striped table-bordered">
+				
+				<tr>
+					<td><label class="form-label col-form-label">Company Name</label></td>
+					<td>					
+					<select class="textfield" name="company_name" id="company_name" style="width:100%">
+					<option value="" selected>Select an option</option>
+					{% for company in company_list %}
+						<option value="{{company}}">{{company}}</option>
+					{% endfor %}					
+					</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td><label class="form-label col-form-label">Company Address</label></td>
+					<td><input type="text" name="company_address" id="company_address" class="textfield" disabled></td>
+				</tr>
+				
+				
+				<tr>
+				<td><label class="form-label col-form-label">Test Taken On</label></td>
+				<td><input type="text" name="Test_taken" id="Test_taken" class="textfield"  ></td>
+				</tr>
+
+				<tr>
+					<td><label class="form-label col-form-label">Department</label></td>
+					<td><input type="text" name="location" id="location" class="textfield" ></td>
+				</tr>	
+				
+				<tr>
+					<td><label class="form-label col-form-label">Regent Used</label></td>
+					<td><input type="text" name="regent_used" id="regent_used" value="PAO" class="textfield" disabled></td>
+				</tr>
+				
+				 
+					
+				<tr>
+					<td><label class="form-label col-form-label">Upstream Concentration (mg/m3) </label></td>
+					<td>
+					<select class="textfield" name="check_val" id="check_val" style="width:100%">
+					<option value="0.01" selected>0.01 %</option>
+					<option value="0.03">0.03 %</option>					
+					</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td><label class="form-label col-form-label">Compressed Air Pressure (kg/cm3)</label></td>
+					<td><input type="number" name="compresed_value" id="compresed_value" class="textfield"></td>
+					
+					
+				</tr>
+					
+				<tr>	
+					<td><label class="form-label col-form-label">Select Serial ID</label></td>
+					
+					<td><select class="textfield" name="SR_NO" id="SR_NO" style="width:100%">
+					<option value="" selected>Select an option</option>
+					{% for equipment in equipment_list %}
+						<option value="{{equipment}}">{{equipment}}</option>
+					{% endfor %}					
+					</select>
+					</td>
+					
+				<tr>	
+					<td><label class="form-label col-form-label">INSTRUMENT_NAME</label></td>
+					<td><input type="text" name="INSTRUMENT_NAME" id="INSTRUMENT_NAME" class="textfield" disabled></td>
+				</tr>
+				
+				<tr>				
+					<td><label class="form-label col-form-label">MAKE_MODEL</label></td>
+					<td><input type="text" name="MAKE_MODEL" id="MAKE_MODEL" class="textfield" disabled></td>
+				</tr>	
+				
+				<tr>	
+					<td><label class="form-label col-form-label">VALIDITY</label></td>
+					<td><input type="text" name="VALIDITY" id="VALIDITY" class="textfield" disabled></td>					
+				</tr>
+				
+				<tr>
+					<td><label class="form-label col-form-label">AHU Number/Equipment ID</label></td>
+					<td><input type="text" name="ahu_number" id="ahu_number" class="textfield"></td>
+				</tr>
+				
+				<tr>
+					<td><label class="form-label col-form-label">ROOM NAME/EQUIPMENT NAME</label></td>
+					<td><input type="text" name="room_name" id="room_name" class="textfield"></td>
+				</tr>
+				
+				</table>				
+				</div>
+
+				
+				
+				<div class="sections">
+					<table id="paotable" class="code_tbl table-striped table-bordered">
+						<tr>
+							<th>Inlet No</th>
+							<th>Upstream Conc</th>
+							<th>Leakage Found  in %</th>
+							<th>Remark</th>
+						</tr>
+						<tr>
+							<td><input type="text" name="INLET_NUMBER" class="textfield"></td>
+							<td><input type="number" name="Upstream" id="Upstream"  class="textfield"></td>
+							<td><input type="number" name="Leakage"  id="Leakage"  class="textfield"></td>
+							<td><input type="text" step="10" name="Remark" id="Remark" disabled class="textfield"></td>			
+							<td class="del_row"><img src = "static/images/delete.png" class="del_row_img" onclick="delete_row(this)"></td>
+						</tr>
+					</table>
+					<div class="add_row_button">
+					<button id="add_row1" type="button" class="btn btn-sm btn-primary col-sm-2 btn_row" onclick="add_row(this)">Add Row</button>
+					</div>
+					<hr size="10">
+				</div>
+
+
+			</div>
+		</div>
+		<hr size="10">
+		<div id="action_row">
+			<button id="paosubmit_button" name="paosubmit_button" type="submit" class="btn btn-sm btn-success col-sm-2" onclick="submit_pao()">Submit</button>
+		</div>
+	</div>
+	
+<my-footer></my-footer>
+<script>
+$( document ).ready(function() {
+		var role = "{{ role }}";
+		handle_nav_bar(role);
+	});
+</script>
+</body>
+
+</html>
