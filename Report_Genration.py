@@ -723,6 +723,171 @@ class Report_Genration:
         dbo.insert_file(Nature_of_test,report_number,userid,Test_taken,testtime,str(company_name_val),location,final_working_directory)
  
         return file_name, store_location
+        
+        
+        
+    @staticmethod
+    def generate_thermal_report(basic_details):
+    
+        stages                    = ["Cycle start","Sterlization start","sterlization end","cycle End"]
+        cycle_name                = str(basic_details['cycle_name'])
+        Test_started_on           = str(basic_details['started_on'])
+        cycle_start_time_duration = int(basic_details['cycle_start_time_duration'])
+        sterlization_duration     = int(basic_details['cycle_sterlization_duration'])
+        cycle_end_duration        = int(basic_details['cycle_end_duration'])
+        interval_time_in_second   = int(basic_details['interval_in_seconds'])
+        cycle_start_range         = [float(basic_details['cycle_start_min']),float(basic_details['cycle_start_max'])]
+        cycle_end_range           = [float(basic_details['cycle_end_min']),float(basic_details['cycle_end_max'])]
+        number_of_sensor          = int(basic_details['number_of_sensor'])
+        format_date               = datetime.datetime.strptime(Test_started_on, '%d-%m-%Y %H:%M:%S')
+        Test_conducted_on         = str(format_date).split()[0]
+        Test_conducted_on         = datetime.datetime.strptime(Test_conducted_on, "%Y-%m-%d").strftime("%d-%m-%Y")
+        Test_conducted_on         = str(Test_conducted_on)
+        sterlization_min_range    = str(basic_details['sterlization_min']).split(",")
+        sterlization_max_range    = str(basic_details['sterlization_max']).split(",")
+        
+       
+        
+        cycle_start_time = str(format_date)
+        sterlization_start_time = format_date + datetime.timedelta(minutes=cycle_start_time_duration)
+        sterlization_start_time = str(sterlization_start_time)
+
+        sterlization_end_time = format_date +datetime.timedelta(minutes=cycle_start_time_duration+sterlization_duration)                           
+        sterlization_end_time = str(sterlization_end_time)
+
+
+        cycle_end_time = format_date +datetime.timedelta(minutes=cycle_start_time_duration+sterlization_duration+cycle_end_duration)                           
+        cycle_end_time = str(cycle_end_time)
+        cycle_start_stage = pd.date_range(cycle_start_time        , sterlization_start_time,freq="{}s".format(interval_time_in_second)).strftime('%d-%m-%Y %H:%M:%S')
+        sterliztion_stage = pd.date_range(sterlization_start_time , sterlization_end_time,freq="{}s".format(interval_time_in_second)).strftime('%d-%m-%Y %H:%M:%S')
+        cycle_end_stage   = pd.date_range(sterlization_end_time   , cycle_end_time,freq="{}s".format(interval_time_in_second)).strftime('%d-%m-%Y %H:%M:%S')
+        random_value_list = [0.1,0.2,0.3,-0.1,-0.2,-0.3]
+        
+        record_list =[]
+
+        range_length = len(cycle_start_stage)
+        cycle_start_temp_range = np.linspace(cycle_start_range[0], cycle_start_range[1], num=range_length)
+        counter = 0
+        for i in cycle_start_stage:
+            record = [Test_conducted_on,i]
+            if counter  == range_length-1:
+                counter = counter-1
+            for x in range(number_of_sensor):
+                temp_temperture = random.uniform(cycle_start_temp_range[counter],cycle_start_temp_range[counter+1])
+                temp_temperture = temp_temperture + float(random.choice(random_value_list))
+                temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                record.append(temp_temperture)
+            record.append("Cycle Started")
+            record_list.append(record)
+            counter=counter+1
+            
+            
+        print(len(sterliztion_stage))
+        for i in sterliztion_stage:
+            record = [Test_conducted_on,i]
+            counter = 0
+            for x in range(number_of_sensor):              
+                temp_temperture = float(random.choice(list(np.arange(float(sterlization_min_range[x]), float(sterlization_max_range[x]), 0.1))))
+                temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                record.append(temp_temperture)
+            record.append("In Sterlization Stage")
+            record_list.append(record)
+            
+            counter=counter+1
+    
+        range_length = len(cycle_end_stage)
+        cycle_end_temp_range = np.linspace(cycle_end_range[0], cycle_end_range[1], num=range_length)
+        counter = 0
+        for i in cycle_end_stage:
+            record = [Test_conducted_on,i]
+            if counter  == range_length-1:
+                counter = counter-1
+            for x in range(number_of_sensor):
+                temp_temperture = random.uniform(cycle_end_temp_range[counter],cycle_end_temp_range[counter+1])
+                temp_temperture = temp_temperture + float(random.choice(random_value_list))
+                temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                record.append(temp_temperture)
+            record.append("Cycle Ended")
+            record_list.append(record)
+            counter=counter+1
+            
+         
+     
+
+        working_directory = MYDIR + "/" "static/Report/THERMAL_REPORT/{}"
+        final_working_directory = "static/Report/THERMAL_REPORT/thermal.xlsx"
+        file_name = "{}.xlsx".format(cycle_name)
+        writer = pd.ExcelWriter(final_working_directory, engine='xlsxwriter')
+        
+        
+
+        store_location = final_working_directory
+        final_working_directory = MYDIR + "/"+final_working_directory
+        print(final_working_directory)
+        
+        temp_df = pd.DataFrame(record_list)
+        columns_list = ["DATE","TIME"]
+        for i in  range(1,number_of_sensor+1):
+            columns_list.append("CH{}".format(str(i).zfill(2)))
+        columns_list.append("STAGE")
+        temp_df.columns = columns_list
+        for i in  range(1,number_of_sensor+1):
+            columns_name = ("CH{}".format(str(i).zfill(2)))
+            temp_df[columns_name] =temp_df[columns_name].astype(float)
+        
+        temp_df["DATE"] = "" 
+        temp_df['TIME'] = temp_df['TIME'].astype(str) 
+        temp_df[['DATE','TIME']] = temp_df['TIME'].str.split(' ',expand=True)
+       
+        #temp_df = temp_df.drop_duplicates(['DATE','TIME'],keep='last') 
+        temp_df.to_excel(writer, sheet_name='Raw Data',index=False)
+        trn_df = temp_df[temp_df['STAGE']=="In Sterlization Stage"]
+        trn_df = trn_df.drop('STAGE', axis=1)
+        
+        trn_df_2 = pd.DataFrame()
+        trn_df_2['MIN'] = trn_df.drop(['DATE','TIME'], axis=1).min(axis=1)
+        trn_df_2['MAX'] = trn_df.drop(['DATE','TIME'], axis=1).max(axis=1)
+        trn_df_2['AVG'] = trn_df.drop(['DATE','TIME'], axis=1).mean(axis=1)
+        trn_df_2['AVG'] = trn_df_2['AVG'].round(1)
+        
+        column_list = trn_df.columns.tolist()
+        action_list = ['min','max','mean']
+        record_list = []
+        for action in action_list:
+            record = []
+            record.append(action)
+            for i in range(2,len(column_list)):
+                operation = "round(trn_df[column_list[i]].{}(),1)".format(action)
+                record.append(eval(operation))
+            record_list.append(record) 
+        row_counter = trn_df.shape[0]+1
+        trn_df_3 = pd.DataFrame(record_list)
+        
+        trn_df_4 = trn_df.copy()
+        delta = 60/interval_time_in_second
+        for i in range(2,(len(column_list))):
+            trn_df_4[column_list[i]] =trn_df_4[column_list[i]].astype(float)
+            trn_df_4[column_list[i]] =  ((trn_df_4[column_list[i]]-121)/10)/delta
+            trn_df_4[column_list[i]] =  10** trn_df_4[column_list[i]]
+            trn_df_4[column_list[i]] =  trn_df_4[column_list[i]].round(2)
+            
+        
+        trn_df.to_excel(writer, sheet_name='Hold_Data',index=False)
+        trn_df_2.to_excel(writer, sheet_name='Hold_Data',startcol=len(column_list)+1,index=False)
+        trn_df_3.to_excel(writer, sheet_name='Hold_Data',startrow=row_counter,startcol=1,header=False,index=False)
+        trn_df_4.to_excel(writer, sheet_name='Hold_Data',startrow=row_counter+5,startcol=0,index=False)
+        # column_list = trn_df_4.columns.tolist()
+        # for i in range(2,(len(column_list))):
+            # plt.plot(trn_df_4['TIME'], trn_df_4[column_list[i]])
+        # plt.xticks(rotation=90)
+        # plt.savefig("static/Report/THERMAL_REPORT/thermal.png",dpi=500)
+        # workbook  = writer.book
+        # worksheet = writer.sheets['Hold_Data']
+        # worksheet.insert_image('I{}'.format(row_counter+5), "static/Report/THERMAL_REPORT/thermal.png")
+        
+        writer.save()
+
+        return file_name, store_location
 
 
 

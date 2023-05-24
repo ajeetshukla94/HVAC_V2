@@ -673,7 +673,28 @@ def get_limits():
              "error":"none"}
         print(d)
         return json.dumps(d)
-    return make_response(render_template('LOGIN_PAGE/login.html'),200)     
+    return make_response(render_template('LOGIN_PAGE/login.html'),200)    
+
+
+@app.route("/thermal_report")
+def thermal_report():
+    if 'user' in session:
+        session_var = session['user']
+        role = session_var["role"]
+        return make_response(render_template('HVAC_SOLUTION/Thermal.html',role = role),200) 
+    return make_response(render_template('LOGIN_PAGE/login.html'),200)   
+
+
+@app.route("/submit_thermal_report",methods=['GET', 'POST'])
+def submit_thermal_report():
+    if 'user' in session:
+        data          = request.form.get('params_data')
+        basic_details = json.loads(data)        
+        session_var   = session['user']		
+        file_name,file_path = Report_Genration.generate_thermal_report(basic_details)           
+        d = {"error":"none","file_name":file_name,"file_path":file_path}
+       
+        return flask.jsonify(d)    
     
 @app.route("/download_report")  
 def download_report ():

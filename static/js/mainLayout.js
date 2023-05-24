@@ -32,6 +32,7 @@ class MyHeader extends HTMLElement{
 									<li><a href="/render_Air_velocity">AIR VELOCITY</a></li>\
 									<li><a href="/render_paotest">PAO TEST</a></li>\
 									<li><a href="/render_particle_count">PARTICLE COUNT</a></li>\
+									<li><a href="/thermal_report">THERMAL REPORT</a></li>\
 									<li><a href="/download_report">DOWNLOAD REPORT</a></li>\
 								</ul>\
 							</li>\

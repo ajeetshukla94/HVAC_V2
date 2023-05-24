@@ -33,6 +33,145 @@ function delete_row(elem){
 
 
 
+function thermal_submit(){
+	
+	
+	var frame_list = document.getElementsByClassName("frame");
+	var basic_details = {};
+	$('#thermalsubmit').hide()
+	if ($('#cycle_name').val()=="")
+	{
+		alert("Enter Cycle Name");$('#thermalsubmit').show()
+		return;
+	}
+	basic_details['cycle_name'] =$('#cycle_name').val();
+	
+	if ($('#started_on').val()=="")
+	{
+		alert("Cycle Start Time Required");$('#thermalsubmit').show()
+		return;
+	}
+	basic_details['started_on'] =$('#started_on').val();
+	
+	
+	if ($('#cycle_start_time_duration').val()=="")
+	{
+		alert("Cycle start to Hold Duration Required");$('#thermalsubmit').show()
+		return;
+	}
+	basic_details['cycle_start_time_duration'] =$('#cycle_start_time_duration').val();
+	
+	if ($('#cycle_sterlization_duration').val()=="")
+	{
+		alert("Sterilization Hold Time Required");$('#thermalsubmit').show()
+		return;
+	}
+	basic_details['cycle_sterlization_duration'] =$('#cycle_sterlization_duration').val();
+	
+	if ($('#cycle_end_duration').val()=="")
+	{
+		alert("Hold End Time To Cycle End Time Required");$('#thermalsubmit').show()
+		return;
+	}
+	basic_details['cycle_end_duration'] =$('#cycle_end_duration').val();
+	
+	if ($('#interval_in_seconds').val()=="")
+	{
+		alert("Logging Interval Time Required");$('#thermalsubmit').show()
+		return;
+	}
+	basic_details['interval_in_seconds'] =$('#interval_in_seconds').val();
+	
+	if ($('#cycle_start_min').val()=="")
+	{
+		alert("Min. Temp At the Cycle Start Required");$('#thermalsubmit').show()
+		return;
+	}
+	basic_details['cycle_start_min'] =$('#cycle_start_min').val();
+	
+	if ($('#cycle_start_max').val()=="")
+	{
+		alert("Max. Temp At the Cycle Start Required");$('#thermalsubmit').show()
+		return;
+	}
+	basic_details['cycle_start_max'] =$('#cycle_start_max').val();
+	
+	
+	
+	if ($('#cycle_end_min').val()=="")
+	{
+		alert("Min. Temp At Cycle End Required");$('#thermalsubmit').show()
+		return;
+	}
+	basic_details['cycle_end_min'] =$('#cycle_end_min').val();
+	
+	if ($('#cycle_end_max').val()=="")
+	{
+		alert("Max. Temp At Cycle End Required");$('#thermalsubmit').show()
+		return;
+	}
+	basic_details['cycle_end_max'] =$('#cycle_end_max').val();
+	
+	if ($('#number_of_sensor').val()=="")
+	{
+		alert("Sensor Qty Required");$('#thermalsubmit').show()
+		return;
+	}
+	basic_details['number_of_sensor'] =$('#number_of_sensor').val();
+	
+	
+	if ($('#sterlization_min').val()=="")
+	{
+		alert("Min. Temp At the Hold Start Required");$('#thermalsubmit').show()
+		return;
+	}
+	if ($('#sterlization_min').val()!="")
+	{
+		var myArray = $('#sterlization_min').val().split(",");
+		if( myArray.length!=$('#number_of_sensor').val())
+		{
+			alert("Min. Temp At the Hold Start does not match with number of sensor quantity");$('#thermalsubmit').show()
+			return;
+		}
+	}
+	basic_details['sterlization_min'] =$('#sterlization_min').val();
+	
+	if ($('#sterlization_max').val()=="")
+	{
+		alert("Max. Temp At the Hold Start Required");$('#thermalsubmit').show()
+		return;
+	}
+	if ($('#sterlization_max').val()!="")
+	{
+		var myArray1 = $('#sterlization_max').val().split(",");
+		if( myArray1.length!=$('#number_of_sensor').val())
+		{
+			alert("Max. Temp At the Hold Start does not match with number of sensor quantity");$('#thermalsubmit').show()
+			return;
+		}
+	}
+	basic_details['sterlization_max'] =$('#sterlization_max').val();
+		
+	$.post('/submit_thermal_report', 
+	{
+		params_data : JSON.stringify(basic_details)
+	}, function(result) 
+	{
+		var link = document.createElement('a')
+		link.href =result.file_path;
+		link.download = result.file_name;
+		link.dispatchEvent(new MouseEvent('click'));
+		$('#thermalsubmit').show()
+		
+
+		
+	});
+	
+}
+
+
+
+
 function add_users()
 {
 	code_tbl = document.getElementsByClassName("code_tbl")[0]
