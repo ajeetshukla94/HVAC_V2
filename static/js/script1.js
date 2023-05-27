@@ -1677,5 +1677,139 @@ function submit_particle_report(){
 	
 }
 
+function updateCompanyDetails()
+{
+	code_tbl = document.getElementsByClassName("code_tbl")[0]
+	code_rows = code_tbl.rows
+	$("#updatecompnaybutton").hide();	
+	for(var j = 1; j<code_rows.length; j++)
+	{
+		tds = code_rows[j].children
+		
+		if (tds[0].firstElementChild.value=="")
+		{	
+				alert("Filter COMPANY NAME cannot be blank in row : "+j);$("#updatecompnaybutton").show();	
+				return;
+		}
+		
+		if (tds[1].firstElementChild.value=="")
+		{	
+				alert("Filter ADDRESS cannot be blank in row : "+j);$("#updatecompnaybutton").show();	
+				return;
+		}
+		
+		
+		if (tds[2].firstElementChild.value=="")
+		{	
+				alert("Filter REPORT NUMBER  cannot be blank in row : "+j);$("#updatecompnaybutton").show();	
+				return;
+		}		
+	}
+	var final_table_data = {};
+    var full_data = {};	
+	for(var j = 1; j<code_rows.length; j++)
+	{
+		tds = code_rows[j].children	
+		var table_data = {};
+		table_data['COMPANY_NAME'] =tds[0].firstElementChild.value 	
+		table_data['ADDRESS'] =tds[1].firstElementChild.value 	
+		table_data['REPORT_NUMBER'] =tds[2].firstElementChild.value 		
+		final_table_data[j] = table_data
+	}
+	
+	full_data['observation']=final_table_data
+	
+	$.post('/submit_updateCompanyDetails', 
+	{
+		params_data : JSON.stringify(full_data)
+	}, function(result) 
+	{
+		alert("COMPANY DETAILS UPDATED");	
+		$("#updatecompnaybutton").show();			
+	});
+	
+}
 
+function updateinstrumentDetails()
+{
+	code_tbl = document.getElementsByClassName("code_tbl")[1]
+	code_rows = code_tbl.rows	
+	$("#instrumnetupdtbtn").hide();	
+	for(var j = 1; j<code_rows.length; j++)
+	{
+		tds = code_rows[j].children		
+		if (tds[0].firstElementChild.value=="")
+		{	
+				alert("Filter Type cannot be blank in row : "+j);$("#instrumnetupdtbtn").show();	
+				return;
+		}		
+		if (tds[1].firstElementChild.value=="")
+		{	
+				alert("Filter EQUIPMENT NAME cannot be blank in row : "+j);$("#instrumnetupdtbtn").show();	
+				return;
+		}	
+		if (tds[2].firstElementChild.value=="")
+		{	
+				alert("Filter MAKE cannot be blank in row : "+j);$("#instrumnetupdtbtn").show();	
+				return;
+		}			
+		if (tds[3].firstElementChild.value=="")
+		{	
+				alert("Filter MODEL NUMBER cannot be blank in row : "+j);$("#instrumnetupdtbtn").show();	
+				return;
+		}			
+		if (tds[4].firstElementChild.value=="")
+		{	
+				alert("Filter SR NO ID cannot be blank in row : "+j);$("#instrumnetupdtbtn").show();	
+				return;
+		}			
+		if (tds[5].firstElementChild.value=="")
+		{	
+				alert("Filter DONE DATE cannot be blank in row : "+j);$("#instrumnetupdtbtn").show();	
+				return;
+		}			
+		if (tds[6].firstElementChild.value=="")
+		{	
+				alert("Filter DUE DATE cannot be blank in row : "+j);$("#instrumnetupdtbtn").show();	
+				return;
+		}
+		if (tds[7].firstElementChild.value=="")
+		{	
+				alert("Filter STATUS  cannot be blank in row : "+j);$("#instrumnetupdtbtn").show();	
+				return;
+		}			
+	}	
+	
+	var final_table_data = {};
+    var full_data = {};	
+	for(var j = 1; j<code_rows.length; j++)
+	{
+		tds = code_rows[j].children	
+		var table_data = {};
+		table_data['Type']  = tds[0].firstElementChild.value 	
+		table_data['EQUIPMENT_NAME']       = tds[1].firstElementChild.value 	
+		table_data['MAKE'] = tds[2].firstElementChild.value 
+		table_data['MODEL_NUMBER']  = tds[3].firstElementChild.value 	
+		table_data['SR_NO_ID']       = tds[4].firstElementChild.value 	
+		table_data['DONE_DATE'] = tds[5].firstElementChild.value 	
+		table_data['DUE_DATE']  = tds[6].firstElementChild.value 		
+		table_data['STATUS']    = tds[7].firstElementChild.value 	
+		table_data['ISSUED_TO'] = tds[8].firstElementChild.value 
+		table_data['COMPANY_NAME']    = tds[9].firstElementChild.value 	
+		table_data['REMARK'] = tds[10].firstElementChild.value 
+		final_table_data[j] = table_data
+	}
+	
+	full_data['observation']=final_table_data
+	
+	$.post('/submit_updateinstrumentDetails', 
+	{
+		params_data : JSON.stringify(full_data)
+	}, function() 
+	{
+		alert("EQUIPMENT DETAILS UPDATED");	
+        window.location.reload();	
+		$("#instrumnetupdtbtn").show();	
+	});
+}
 	

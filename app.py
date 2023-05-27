@@ -759,6 +759,33 @@ def view_reportlog():
         d = {"error":"none","report_log":report_log}  
         return flask.jsonify(d) 
     return make_response(render_template('LOGINPAGE/login.html'),200) 
+    
+    
+@app.route("/submit_updateCompanyDetails" ,methods=['GET', 'POST'])    
+def submit_updateCompanyDetails():
+    if 'user' in session:
+        data            = request.form.get('params_data')
+        data            = json.loads(data)   
+        observation     = data['observation']
+        temp_df         = pd.DataFrame.from_dict(observation,orient ='index')
+        temp_df         = temp_df[['COMPANY_NAME','ADDRESS','REPORT_NUMBER']]
+        temp_df['COMPANY_NAME'] = temp_df['COMPANY_NAME'].apply(lambda x : str(x).strip())
+        temp_df['ADDRESS'] = temp_df['ADDRESS'].apply(lambda x : str(x).strip())
+        dbo.update_company_details(temp_df)
+        d = {"error":"none",}   
+        return flask.jsonify(d)
+        
+@app.route("/submit_updateinstrumentDetails",methods=['GET', 'POST'] )    
+def submit_updateinstrumentDetails():
+    if 'user' in session:
+        data            = request.form.get('params_data')
+        data            = json.loads(data)   
+        observation     = data['observation']
+        temp_df         = pd.DataFrame.from_dict(observation,orient ='index')
+        temp_df         = temp_df[['Type','EQUIPMENT_NAME','MAKE','MODEL_NUMBER','SR_NO_ID','DONE_DATE','DUE_DATE','STATUS','ISSUED_TO','COMPANY_NAME' ,'REMARK']]
+        dbo.update_equipment(temp_df)
+        d = {"error":"none",}   
+        return json.dumps(d)
 
 ############################### END HVAC MODULE  ##################################################################### 
 

@@ -191,6 +191,26 @@ class DBO:
             return company_frame
         except Exception as e:
             return e
+    def update_company_details(self,company_details):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            cursor.execute("""truncate ppehvacdb.company_details""")
+            conn.commit()
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            for row in company_details.itertuples():
+                query = """INSERT INTO ppehvacdb.company_details 
+                    (COMPANY_NAME ,ADDRESS ,REPORT_NUMBER) 
+                    VALUES ( '{}','{}','{}')""".format(row[1],row[2],row[3])
+                
+               
+                cursor.execute(query)
+            conn.commit()
+
+                
+        except Exception as e: 
+            return e  
 
             
     def get_company_details_by_company_name(self,COMPANY_NAME):
@@ -341,6 +361,29 @@ class DBO:
             equipment_frame = pd.DataFrame(equipment_list,columns = ['Type' ,'EQUIPMENT_NAME' ,'MAKE' ,'MODEL_NUMBER','SR_NO_ID' ,'DONE_DATE' ,'DUE_DATE','STATUS','ISSUED_TO','COMPANY_NAME' ,'REMARK'])
             return equipment_frame
         except Exception as e:
+            return e
+            
+    def update_equipment(self,equipment_master):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            cursor.execute("""Truncate ppehvacdb.equipment_master""")
+            conn.commit()
+            
+            for row in equipment_master.itertuples():
+                query = """INSERT INTO ppehvacdb.equipment_master 
+                    (Type ,EQUIPMENT_NAME ,MAKE ,MODEL_NUMBER,SR_NO_ID ,
+                    DONE_DATE ,DUE_DATE,STATUS,ISSUED_TO ,COMPANY_NAME,REMARK) 
+                    VALUES ( '{}','{}','{}','{}','{}',
+                   '{}','{}','{}','{}','{}','{}')""".format(row[1],row[2],row[3],row[4],
+                                                  row[5],row[6],row[7],
+                                                  row[8],row[9],row[10],row[11])
+                
+                cursor.execute(query)
+            conn.commit()
+            
+                
+        except Exception as e: 
             return e
             
 
