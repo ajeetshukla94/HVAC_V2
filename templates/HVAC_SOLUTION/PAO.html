@@ -106,12 +106,26 @@
 				</tr>
 				
 				<tr>
-					<td><label class="form-label col-form-label">AHU Number/Equipment ID</label></td>
+					<td><label class="form-label col-form-label">TEST TYPE</label></td>
+					<td>
+						<fieldset>
+							<div class="wrapper-class">
+								<input type="radio" class="radio" name="test_type" value="AHU" id="AHU" checked="checked"  />
+								<label for="AHU">AHU</label>
+								<input type="radio" class="radio" name="test_type" value="EQUIPMENT" id="EQUIPMENT" />
+								<label for="EQUIPMENT">EQUIPMENT</label>
+							</div>
+						</fieldset>
+					</td>
+				</tr>
+				
+				<tr>
+					<td><label class="form-label col-form-label"name="test_for_id_lbl" id="test_for_id_lbl">AHU Number</label></td>
 					<td><input type="text" name="ahu_number" id="ahu_number" class="textfield"></td>
 				</tr>
 				
 				<tr>
-					<td><label class="form-label col-form-label">ROOM NAME/EQUIPMENT NAME</label></td>
+					<td><label class="form-label col-form-label"name="test_for_name_lbl" id="test_for_name_lbl">ROOM NAME</label></td>
 					<td><input type="text" name="room_name" id="room_name" class="textfield"></td>
 				</tr>
 				

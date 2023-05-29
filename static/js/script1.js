@@ -1242,8 +1242,9 @@ $('#paotable').on('change', 'input', function () {
 });
 
 
-function submit_pao(){
-	
+function submit_pao()
+{
+	test_type = $('input[name="test_type"]:checked').val();
 	$("#paosubmit_button").hide();
 	var frame_list = document.getElementsByClassName("frame");
 	var basic_details = {};
@@ -1303,6 +1304,7 @@ function submit_pao(){
 	
 	basic_details['compresed_value'] = $('#compresed_value').val();
 	basic_details['check_val']       = $('#check_val').val();
+	basic_details['test_type']       = test_type;
 	
 		
 	code_tbl = frame_list[0].getElementsByClassName("code_tbl")[1]
@@ -1813,3 +1815,39 @@ function updateinstrumentDetails()
 	});
 }
 	
+
+
+$('input[type=radio][name=test_type]').change(function() 
+{
+    if (this.value == 'AHU') 
+	{
+        $("#test_for_name_lbl").text("AHU Number");
+		$("#test_for_id_lbl").text("ROOM Name");
+    }
+    else if (this.value == 'EQUIPMENT')
+	{
+        $("#test_for_name_lbl").text("Equipment ID");
+		$("#test_for_id_lbl").text("Equipment Name");
+    }
+});
+
+
+var val_1;
+var val_2;
+$("#pa_grade").change(function()
+{ 
+	grade = $('option:selected',this).text();
+	var full_data = {};
+	full_data['grade'] = grade   	
+	if (grade=="A" || grade=="ISO 5")
+	{
+		 $("#test_for_name_lbl").text("Equipment ID");
+		$("#test_for_id_lbl").text("Equipment Name");
+	}
+	else
+	{
+		$("#test_for_name_lbl").text("AHU Number");
+		$("#test_for_id_lbl").text("ROOM Name");
+	}
+});
+

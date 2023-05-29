@@ -229,7 +229,7 @@ class Report_Genration:
 
         ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=9)
         if (grade=="A") or (grade=="ISO 5"):
-            ws["B" + str(row)] = "Acceptance criteria : NMT 90\u00B1 20 % ( 72 TO 108 FPM)".format(str(acph_thresold))
+            ws["B" + str(row)] = "Acceptance criteria : 90\u00B1 20 % ( 72 TO 108 FPM)".format(str(acph_thresold))
         else: 
             ws["B" + str(row)] = "Acceptance criteria :Not less Than {} ACPH".format(str(acph_thresold))
 
@@ -305,7 +305,7 @@ class Report_Genration:
     @staticmethod
     def generate_report_pao(data, basic_details,user,userid):
     
-    
+        test_type        = basic_details['test_type']
         sr_no            = basic_details['sr_no']
         company_name     = basic_details['company_name']
         room_name        = basic_details['room_name']
@@ -350,7 +350,7 @@ class Report_Genration:
         final_working_directory = MYDIR + "/"+final_working_directory.format(compan_name, file_name)
         print(final_working_directory)
 
-        wb = load_workbook(os.path.join("static/inputData/Template/",'PAO_template.xlsx'))
+        wb = load_workbook(os.path.join("static/inputData/Template/","PAO_template_{test_type}.xlsx".format(test_type=test_type)))
         ws = wb.active
         ws.protection.sheet = False
 
@@ -361,7 +361,7 @@ class Report_Genration:
         ws['F5'] = str(Test_taken)
         ws['F6'] = str(regent_used)
         ws['F7'] = str(ahu_number)
-        ws['F9'] = str(location)
+        ws['F8'] = str(location)
         report_counter  = dbo.get_report_number(Nature_of_test,Test_taken,str(company_name_val))
         report_counter  = report_counter+1
         temp_date = Test_taken.replace("/","")        
@@ -528,8 +528,10 @@ class Report_Genration:
         store_location = final_working_directory.format(compan_name, file_name)
         final_working_directory = MYDIR +"/" + final_working_directory.format(compan_name, file_name)
         print(final_working_directory)
-
-        wb = load_workbook(os.path.join("static/inputData/Template/",'particle_count_template.xlsx'))
+        if grade=="ISO 5" or grade=="A":
+            wb = load_workbook(os.path.join("static/inputData/Template/",'particle_count_template_iso5.xlsx'))
+        else:
+            wb = load_workbook(os.path.join("static/inputData/Template/",'particle_count_template.xlsx'))
         ws = wb.active
         #ws.protection.sheet = False
 
@@ -615,22 +617,33 @@ class Report_Genration:
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
         ws.merge_cells(start_row=row, start_column=8, end_row=row, end_column=9)
-        ws["H" + str(row)] = round(data.zeor_point_five.std(),0)
+        if row==22:
+            ws["H" + str(row)]="NA"
+        else:
+            ws["H" + str(row)] = round(data.zeor_point_five.std(),0)
         currentCell = ws["H" + str(row)]
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
         ws.merge_cells(start_row=row, start_column=10, end_row=row, end_column=11)
-        ws["J" + str(row)] = round(data.five_point_zero.std(),0)
+        
+        if row==22:
+            ws["J" + str(row)]="NA"
+        else:    
+            ws["J" + str(row)] = round(data.five_point_zero.std(),0)
+        
+            
         currentCell = ws["J" + str(row)]
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
         ws.merge_cells(start_row=row, start_column=12, end_row=row, end_column=16)
         row = row + 1
 
         ws.merge_cells(start_row=row, start_column=2, end_row=row + 1, end_column=16)
-        ws["B" + str(row)] = "Maximum {}".format(gl_value)
+        ws["B" + str(row)] = """Maximum Permitted number of particles/m\u00B3 equal to or greater than the tabulated size as per {GUIDELINE} """.format(GUIDELINE=gl_value)
         currentCell = ws["B" + str(row)]
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
         row = row + 2
+        
+        
 
         ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=7)
         ws["B" + str(row)] = "GRADE"
