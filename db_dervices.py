@@ -282,7 +282,7 @@ class DBO:
             return e 
             
     def get_expense_sheet_by_user(self,userid):
-        stmt = "SELECT * from ppehvacdb.ExpenseMaster where userid='{}' ORDER BY date DESC limit 10".format(userid)
+        stmt = "SELECT * from ppehvacdb.ExpenseMaster where userid='{}' ORDER BY date DESC ".format(userid)
         conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
         cursor.execute(stmt)
