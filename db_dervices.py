@@ -575,7 +575,7 @@ class DBO:
             and str_to_date(date,'%d/%m/%Y') <=str_to_date('{}','%d/%m/%Y') )""".format(startDate,endDate)
             
         if companyname!="ALL":
-            stmt = " and company_name='{}'".format(companyname)
+            stmt = stmt+" and company_name='{}'".format(companyname)
                 
         if USERNAME!="ALL":
             stmt=stmt+" and prepared_by='{}'".format(USERNAME)
