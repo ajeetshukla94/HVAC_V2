@@ -100,10 +100,15 @@ class Report_Genration:
         compan_name         = compan_name.replace(".", "")
         compan_name         = compan_name.replace("/", "")
         compan_name         = compan_name.replace(" ", "")
-
+        
+        report_counter  = dbo.get_report_number(Nature_of_test,Test_taken,str(company_name_val))
+        report_counter  = report_counter+1
+        temp_date       = Test_taken.replace("/","")        
+        report_number   = str("PPE{}AV{}{}".format(report_number,temp_date,report_counter))
+        
         working_directory   = MYDIR + "/" +"static/Report/AIR_VELOCITY_REPORT/{}"
         final_working_directory = "static/Report/AIR_VELOCITY_REPORT/{}/{}.xlsx"
-        file_name           = "{}_AIR_VELOCOTY_REPORT_{}".format(room_name, str(datetime.datetime.today().strftime('%d_%m_%Y')))
+        file_name           = str(report_number)+"xlsx" #"{}_AIR_VELOCOTY_REPORT_{}".format(room_name, str(datetime.datetime.today().strftime('%d_%m_%Y')))
         if not os.path.exists(working_directory.format(compan_name)):
             os.mkdir(working_directory.format(compan_name));
 
@@ -129,10 +134,7 @@ class Report_Genration:
         ws['F6'] = str(ahu_number)
         ws['F7'] = str(location)
         
-        report_counter  = dbo.get_report_number(Nature_of_test,Test_taken,str(company_name_val))
-        report_counter  = report_counter+1
-        temp_date       = Test_taken.replace("/","")        
-        report_number   = str("PPE{}AV{}{}".format(report_number,temp_date,report_counter))
+
         
         ws['F8']  = report_number
         ws['B14'] = str(INSTRUMENT_NAME)
@@ -340,9 +342,15 @@ class Report_Genration:
         compan_name = compan_name.replace("/", "")
         compan_name = compan_name.replace(" ", "")
 
+        report_counter  = dbo.get_report_number(Nature_of_test,Test_taken,str(company_name_val))
+        report_counter  = report_counter+1
+        temp_date = Test_taken.replace("/","")        
+        report_number = str("PPE{}PAO{}{}".format(report_number,temp_date,report_counter))
+        
         working_directory = MYDIR + "/" "static/Report/PAO_REPORT/{}"
         final_working_directory = "static/Report/PAO_REPORT/{}/{}.xlsx"
-        file_name = "{}_PAO_REPORT_{}".format(room_name, str(datetime.datetime.today().strftime('%d_%m_%Y')))
+        file_name           = str(report_number)+"xlsx"
+        #file_name = "{}_PAO_REPORT_{}".format(room_name, str(datetime.datetime.today().strftime('%d_%m_%Y')))
         if not os.path.exists(working_directory.format(compan_name)):
             os.mkdir(working_directory.format(compan_name));
 
@@ -362,10 +370,6 @@ class Report_Genration:
         ws['F6'] = str(regent_used)
         ws['F7'] = str(ahu_number)
         ws['F8'] = str(location)
-        report_counter  = dbo.get_report_number(Nature_of_test,Test_taken,str(company_name_val))
-        report_counter  = report_counter+1
-        temp_date = Test_taken.replace("/","")        
-        report_number = str("PPE{}PAO{}{}".format(report_number,temp_date,report_counter))
         ws['F9'] = report_number
 
         ws['B15'] = str(INSTRUMENT_NAME)
@@ -520,9 +524,17 @@ class Report_Genration:
         if "EU" in gl_value  :
             trn = EUGMP_guidlines[(EUGMP_guidlines['Condition'] == condition) & (EUGMP_guidlines['Grade'] == grade)]
         print(trn)
+        report_counter  = dbo.get_report_number(Nature_of_test,Test_taken,str(company_name_val))
+        report_counter  = report_counter+1
+        temp_date = Test_taken.replace("/","")        
+        report_number = str("PPE{}PC{}{}".format(report_number,temp_date,report_counter))
+        
+        
+        
         working_directory = MYDIR + "/"  "static/Report/PARTICLE_REPORT/{}"
         final_working_directory = "static/Report/PARTICLE_REPORT/{}/{}.xlsx"
-        file_name = "{}_PARTICLE_REPORT_{}".format(room_name, str(datetime.datetime.today().strftime('%d_%m_%Y')))
+        file_name           = str(report_number)+"xlsx"
+        #file_name = "{}_PARTICLE_REPORT_{}".format(room_name, str(datetime.datetime.today().strftime('%d_%m_%Y')))
         if not os.path.exists(working_directory.format(compan_name)):
             os.mkdir(working_directory.format(compan_name));
         store_location = final_working_directory.format(compan_name, file_name)
@@ -546,10 +558,6 @@ class Report_Genration:
         #ws['F9'] = str(done_date).replace("-", "/")
         #ws['F10'] = str(due_date).replace("-", "/")
         
-        report_counter  = dbo.get_report_number(Nature_of_test,Test_taken,str(company_name_val))
-        report_counter  = report_counter+1
-        temp_date = Test_taken.replace("/","")        
-        report_number = str("PPE{}PC{}{}".format(report_number,temp_date,report_counter))
         ws['F9'] = report_number
         
 
