@@ -10,6 +10,7 @@ XlsxWriter
 pyodbc
 datetime
 mysql-connector-python==8.0.29
+pywin32
 
 
 
