@@ -1477,7 +1477,7 @@ function view_report_log()
 			</tr>'		
 			$('#ReportTable').append(temp);	
 			$('#DownlodReportbtn').show();
-			$('#DownlodaggReportbtn').show();
+			$('#DownlodaggReportbtn').hide();
 						
 		}	
 	});
