@@ -23,6 +23,9 @@ from crypt_services import encrypt_sha256
 import random
 import string
 from Report_Genration import Report_Genration
+from pathlib import Path
+import win32com.client as win32
+import pythoncom
 
 app = Flask(__name__)
 app.secret_key = 'file_upload_key'
@@ -757,6 +760,38 @@ def view_reportlog():
         basic_details   = json.loads(data)    
         report_log      = dbo.get_report_log(basic_details).to_dict('records')
         d = {"error":"none","report_log":report_log}  
+        return flask.jsonify(d) 
+    return make_response(render_template('LOGINPAGE/login.html'),200) 
+    
+@app.route("/consolidate_report")  
+def consolidate_report():
+    if 'user' in session:   
+        data            = request.args.get('params_data')
+        basic_details   = json.loads(data)    
+        report_log      = dbo.get_report_log(basic_details,write_to_directory=True)
+        win32c =  win32.constants
+        excel = win32.gencache.EnsureDispatch('Excel.Application',pythoncom.CoInitialize())
+        excel.Visible = False  # False
+        wb1  = ""    
+        path = MYDIR + "\\"+"static\\Report\\TEMP_DIR"
+        file_list = glob.glob(path+"\\*.xlsx")
+        for file_name in file_list:
+            print(file_name)
+            if wb1 == "":
+                wb1 = excel.Workbooks.Open(file_name)        
+            else:
+                wb2 = excel.Workbooks.Open(file_name)
+                wb2.Sheets(1).Copy(Before=wb1.Sheets(1))
+                wb2.Close(True)
+        save_path = path+"\\Combined_Report.xlsx"
+        wb1.SaveAs(Filename = save_path) 
+        wb1.Close(True)
+        excel.Quit()
+        
+        file_name="Combined_Report.xlsx"
+        file_path = "static\\Report\\TEMP_DIR\\Combined_Report.xlsx"
+        d = {"error":"none","file_name":file_name,"file_path":file_path}  
+        
         return flask.jsonify(d) 
     return make_response(render_template('LOGINPAGE/login.html'),200) 
     

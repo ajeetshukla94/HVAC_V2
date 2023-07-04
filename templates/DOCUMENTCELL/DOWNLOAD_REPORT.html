@@ -79,6 +79,9 @@
 					<div id="action_row">
 						<button id="DownlodReportbtn" type="DownlodReportbtn" class="btn btn-sm btn-success col-sm-4" onclick="DownlodReport()">Downlod Report</button>
 					</div>
+					<div id="action_row">
+						<button id="DownlodaggReportbtn" type="DownlodaggReportbtn" class="btn btn-sm btn-success col-sm-4" onclick="consolidate_report()">Conslidate Report</button>
+					</div>
 				</div>
 				
 				
@@ -92,7 +95,8 @@
 $( document ).ready(function() {
 		var role = "{{ role }}";
 		handle_nav_bar(role);
-				$('#DownlodReportbtn').hide();
+		$('#DownlodReportbtn').hide();
+		$('#DownlodaggReportbtn').hide();
 	});
 </script>
 </body>

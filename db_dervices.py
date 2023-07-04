@@ -17,6 +17,7 @@ import io
 from crypt_services import encrypt_sha256
 import base64
 from base64 import b64encode
+from pathlib import Path
 MYDIR        = os.path.dirname(__file__)
 
    
@@ -282,7 +283,7 @@ class DBO:
             return e 
             
     def get_expense_sheet_by_user(self,userid):
-        stmt = "SELECT * from ppehvacdb.ExpenseMaster where userid='{}' ORDER BY date DESC ".format(userid)
+        stmt = "SELECT * from ppehvacdb.ExpenseMaster where userid='{}' ORDER BY STATUS DESC ".format(userid)
         conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
         cursor.execute(stmt)
@@ -558,7 +559,7 @@ class DBO:
             print(e)
             print("Failed to insert blob into the table")
            
-    def get_report_log(self,basic_details):
+    def get_report_log(self,basic_details,write_to_directory=False):
         
         companyname  = basic_details['companyname']
         USERNAME     = basic_details['USERNAME']
@@ -593,6 +594,8 @@ class DBO:
         cursor = conn.cursor()
         cursor.execute(stmt)
         report_list = []
+        if write_to_directory:
+            [f.unlink() for f in Path("static/Report/TEMP_DIR/").glob("*") if f.is_file()] 
         for row in cursor:
             temp_row=[]
             temp_row.append(row[0])
@@ -605,7 +608,13 @@ class DBO:
             file_name ="{}.xlsx".format(row[1])
             temp_row.append(file_name)
             temp_row.append(base64.b64encode(row[7]).decode('ascii'))
-            
+            if write_to_directory:                  
+                    final_working_directory = "static/Report/TEMP_DIR/{}"       
+                    store_location = final_working_directory.format(file_name)
+                    final_working_directory = MYDIR + "/"+final_working_directory.format(file_name)         
+                    with open(final_working_directory, 'wb') as file:
+                        file.write(row[7])
+        
                       
             report_list.append(temp_row)
         report_frame = pd.DataFrame(report_list,columns = ['report_type', 'report_number',

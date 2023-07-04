@@ -1439,6 +1439,7 @@ function view_report_log()
 	
 	$('#ReportTable').empty();
 	$('#DownlodReportbtn').hide();
+	$('#DownlodaggReportbtn').hide();
 	$.getJSON('/view_reportlog', 
 	{
 		params_data : JSON.stringify(basic_details)
@@ -1476,8 +1477,45 @@ function view_report_log()
 			</tr>'		
 			$('#ReportTable').append(temp);	
 			$('#DownlodReportbtn').show();
+			$('#DownlodaggReportbtn').show();
 						
 		}	
+	});
+	
+}
+
+
+function consolidate_report()
+{
+	basic_details={}
+	basic_details['companyname']   = $('#companyname').val();
+	basic_details['USERNAME']      = $('#USERNAME').val();
+	basic_details['reporttype']    = $('#reporttype').val();
+	basic_details['reportnumber']  = $('#reportnumber').val();
+	basic_details['room_name']     = $('#room_name').val();
+	basic_details['startdate']     = $('#startdate').val();
+	basic_details['enddate']       = $('#enddate').val();
+	
+	if ($('#startdate').val()=="")
+	{
+		alert("Please select Start Date");
+		return ;
+	}
+	if ($('#enddate').val()=="")
+	{
+		alert("Please select End Date");
+		return ;
+	}
+	
+	$.getJSON('/consolidate_report', 
+	{
+		params_data : JSON.stringify(basic_details)
+	}, function(result) 
+	{
+		var link = document.createElement('a')
+		link.href =result.file_path;
+		link.download = result.file_name;
+		link.dispatchEvent(new MouseEvent('click'));
 	});
 	
 }
