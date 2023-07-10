@@ -97,6 +97,10 @@ $( document ).ready(function() {
 		handle_nav_bar(role);
 		$('#DownlodReportbtn').hide();
 		$('#DownlodaggReportbtn').hide();
+		if (role =="companyPortal")
+		{
+			$("#USERNAME option[value='{{ userid }}']").remove();
+		}
 	});
 </script>
 </body>

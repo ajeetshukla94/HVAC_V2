@@ -33,6 +33,10 @@ class MyHeader extends HTMLElement{
 									<li><a href="/render_paotest">PAO TEST</a></li>\
 									<li><a href="/render_particle_count">PARTICLE COUNT</a></li>\
 									<li><a href="/thermal_report">THERMAL REPORT</a></li>\
+								</ul>\
+							</li>\
+							<li id="HVAC_REPORT_DWN" class="sub-menu"><a href="#expense">REPORT SUITE<div class="fa fa-caret-down right"></div></a>\
+								<ul>\
 									<li><a href="/download_report">DOWNLOAD REPORT</a></li>\
 								</ul>\
 							</li>\
@@ -92,13 +96,17 @@ class MyHeader extends HTMLElement{
 				    <li><a href="/render_Air_velocity">AIR VELOCITY</a></li>\
 					<li><a href="/render_paotest">PAO TEST</a></li>\
 					<li><a href="/render_particle_count">PARTICLE COUNT</a></li>\
-					<li><a href="/thermal_report">THERMAL REPORT</a></li>\
 					<li><a href="/download_report">DOWNLOAD REPORT</a></li>\
 					</ul>\
 					\
 					\
 					\
-					<ul id="profile_grp">\
+					<ul id="HVAC_REPORT_DWN">\
+					<li><a href="/download_report">DOWNLOAD REPORT</a></li>\
+					</ul>\
+					\
+					\
+					\<ul id="profile_grp">\
 					<li><a href="/update_self_profile_page">PROFILE</a></li>\
 					<li><a href="/logout">LOGOUT</a></li>\
 					</ul>\

@@ -703,14 +703,19 @@ def submit_thermal_report():
 def download_report ():
     if 'user' in session:
         account = session["user"]
-        usernameList = [account['user']]
+        userid  = account['user']
+        usernameList = [userid]
         role         =  account['role']
         print(account)
         if role == "admin":
-            usernameList  = dbo.get_username()        
+            usernameList  = dbo.get_username() 
         customer_details  = dbo.get_company_details()
-        company_name_list = customer_details.COMPANY_NAME.unique().tolist()       
-        return make_response(render_template('DOCUMENTCELL/DOWNLOAD_REPORT.html',company_list=company_name_list,usernameList=usernameList,role = role),200) 
+        company_name_list = customer_details.COMPANY_NAME.unique().tolist() 
+        if role == "companyPortal":
+            account      = dbo.get_cred(account['user'])
+            company_name_list = [account['COMPANYNAME']]
+              
+        return make_response(render_template('DOCUMENTCELL/DOWNLOAD_REPORT.html',company_list=company_name_list,usernameList=usernameList,role = role,userid=userid),200) 
     return make_response(render_template('LOGINPAGE/login.html'),200) 
 
 @app.route("/edit_report")  
