@@ -584,9 +584,9 @@ class DBO:
         if reporttype!="ALL":
             stmt=stmt+" and report_type='{}'".format(reporttype)            
         if reportnumber!="":
-            stmt=stmt+" and report_number like '{}'".format(reportnumber)
+            stmt=stmt+" and lower(report_number) like '%{}%'".format(reportnumber.lower())
         if room_name!="":
-            stmt=stmt+" and room_name like '{}'".format(room_name)
+            stmt=stmt+" and lower(room_name) like '%{}%'".format(room_name.lower())
         
         
         print(stmt)
