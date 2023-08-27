@@ -553,7 +553,10 @@ class Report_Genration:
         #ws['F5'] = str(Nature_of_test)
         ws['F5'] = str(Test_taken)
         ws['F6'] = str(condition)
-        ws['F7'] = str(ahu_number)
+        if grade=="ISO 5" or grade=="A":
+            ws['F7'] = str(room_name)
+        else:
+            ws['F7'] = str(ahu_number)
         ws['F8'] = str(location)
         #ws['F9'] = str(done_date).replace("-", "/")
         #ws['F10'] = str(due_date).replace("-", "/")
@@ -592,7 +595,10 @@ class Report_Genration:
             row += 1
 
         ws.merge_cells(start_row=20, start_column=2, end_row=row - 1, end_column=4)
-        ws['B20'] = room_name
+        if grade=="ISO 5" or grade=="A":
+            ws['B20'] = ahu_number
+        else:
+            ws['B20'] = room_name
         currentCell = ws['B20']
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
         currentCell = ws['D20']
@@ -654,7 +660,10 @@ class Report_Genration:
         
 
         ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=7)
-        ws["B" + str(row)] = "GRADE"
+        if "ISO" in gl_value : 
+            ws["B" + str(row)] = "CLASS"
+        else:
+            ws["B" + str(row)] = "GRADE"
         currentCell = ws["B" + str(row)]
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
@@ -671,7 +680,10 @@ class Report_Genration:
         row = row + 1
 
         ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=7)
-        ws["B" + str(row)] = "GRADE {}".format(grade.upper())
+        if "ISO" in gl_value : 
+            ws["B" + str(row)] = "CLASS {}".format(grade.upper())
+        else:
+            ws["B" + str(row)] = "GRADE {}".format(grade.upper())
         currentCell = ws["B" + str(row)]
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
