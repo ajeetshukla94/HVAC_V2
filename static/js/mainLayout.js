@@ -132,7 +132,7 @@ class MyFooter extends HTMLElement
 {	
 	connectedCallback()
 	{
-		this.innerHTML ='<div id="footer"><h6 id="footer-text">Developed By &#169; Document Manager</h6></div>'
+		this.innerHTML ='<div id="footer"><h6 id="footer-text">Developed By &#169; PharmaSync-By Pin Point Engineers</h6></div>'
 	}
 }
 customElements.define('my-footer',MyFooter)
