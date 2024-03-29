@@ -268,7 +268,7 @@ class Report_Genration:
         
         testtime = datetime.datetime.now(tz=gettz('Asia/Kolkata'))
         testtime = str(testtime.strftime('%d/%m/%Y %H:%M:%S')).split(" ")[0]
-        ws["B" + str(row + 3)]= "Electronically Signed by {} on {} ".format(user, testtime)
+        ws["B" + str(row + 3)]= "Electronically Signed by {} on {} ".format(userid, testtime)
         currentCell = ws["B" + str(row + 3)]
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
@@ -445,7 +445,7 @@ class Report_Genration:
         
         testtime = datetime.datetime.now(tz=gettz('Asia/Kolkata'))
         testtime = str(testtime.strftime('%d/%m/%Y %H:%M:%S')).split(" ")[0]
-        ws["B" + str(row + 3)]= "Electronically Signed by {} on {} ".format(user, testtime)
+        ws["B" + str(row + 3)]= "Electronically Signed by {} on {} ".format(userid, testtime)
         currentCell = ws["B" + str(row + 3)]
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
@@ -721,7 +721,7 @@ class Report_Genration:
         
         testtime = datetime.datetime.now(tz=gettz('Asia/Kolkata'))
         testtime = str(testtime.strftime('%d/%m/%Y %H:%M:%S')).split(" ")[0]
-        ws["B" + str(row + 3)]= "Electronically Signed by {} on {} ".format(user, testtime)
+        ws["B" + str(row + 3)]= "Electronically Signed by {} on {} ".format(userid, testtime)
         currentCell = ws["B" + str(row + 3)]
         currentCell.alignment = Alignment(horizontal='center', vertical='center')
 
