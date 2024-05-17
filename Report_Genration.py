@@ -119,12 +119,12 @@ class Report_Genration:
  
         wb = load_workbook(os.path.join("static/inputData/Template/",'Air_velocity_template.xlsx'))
         ws = wb.active
-        ws.protection.sheet = False
+        ws.protection.sheet = True
 
         if grade=="A" or grade=="ISO 5":
             wb = load_workbook(os.path.join("static/inputData/Template/",'Air_velocity_template_grade_a.xlsx'))
             ws = wb.active
-            ws.protection.sheet = False
+            ws.protection.sheet = True
 
         # Data can be assigned directly to cells
         ws['F3'] = str(company_name_val)
@@ -360,7 +360,7 @@ class Report_Genration:
 
         wb = load_workbook(os.path.join("static/inputData/Template/","PAO_template_{test_type}.xlsx".format(test_type=test_type)))
         ws = wb.active
-        ws.protection.sheet = False
+        ws.protection.sheet = True
 
         # Data can be assigned directly to cells
         ws['F3'] = str(company_name_val)
@@ -545,7 +545,7 @@ class Report_Genration:
         else:
             wb = load_workbook(os.path.join("static/inputData/Template/",'particle_count_template.xlsx'))
         ws = wb.active
-        #ws.protection.sheet = False
+        ws.protection.sheet = True
 
         # Data can be assigned directly to cells
         ws['F3'] = str(company_name_val)
