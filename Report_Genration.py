@@ -782,18 +782,25 @@ class Report_Genration:
        
         
         cycle_start_time = str(format_date)
-        sterlization_start_time = format_date + datetime.timedelta(minutes=cycle_start_time_duration)
+        cycle_end_time1  = format_date + datetime.timedelta(minutes=cycle_start_time_duration) 
+        cycle_end_time1  = str(cycle_end_time1)
+
+        sterlization_start_time = format_date + datetime.timedelta(minutes=cycle_start_time_duration) + datetime.timedelta(seconds=interval_time_in_second)
         sterlization_start_time = str(sterlization_start_time)
 
-        sterlization_end_time = format_date +datetime.timedelta(minutes=cycle_start_time_duration+sterlization_duration)                           
+        sterlization_end_time = format_date +datetime.timedelta(minutes=cycle_start_time_duration+sterlization_duration) + datetime.timedelta(seconds=interval_time_in_second)                     
         sterlization_end_time = str(sterlization_end_time)
+
+
+        cycle_end_strt_time = format_date +datetime.timedelta(minutes=cycle_start_time_duration+sterlization_duration) + datetime.timedelta(seconds=interval_time_in_second)       + datetime.timedelta(seconds=interval_time_in_second)                     
+        cycle_end_strt_time = str(cycle_end_strt_time)
 
 
         cycle_end_time = format_date +datetime.timedelta(minutes=cycle_start_time_duration+sterlization_duration+cycle_end_duration)                           
         cycle_end_time = str(cycle_end_time)
-        cycle_start_stage = pd.date_range(cycle_start_time        , sterlization_start_time,freq="{}s".format(interval_time_in_second)).strftime('%d-%m-%Y %H:%M:%S')
+        cycle_start_stage = pd.date_range(cycle_start_time        , cycle_end_time1,freq="{}s".format(interval_time_in_second)).strftime('%d-%m-%Y %H:%M:%S')
         sterliztion_stage = pd.date_range(sterlization_start_time , sterlization_end_time,freq="{}s".format(interval_time_in_second)).strftime('%d-%m-%Y %H:%M:%S')
-        cycle_end_stage   = pd.date_range(sterlization_end_time   , cycle_end_time,freq="{}s".format(interval_time_in_second)).strftime('%d-%m-%Y %H:%M:%S')
+        cycle_end_stage   = pd.date_range(cycle_end_strt_time   , cycle_end_time,freq="{}s".format(interval_time_in_second)).strftime('%d-%m-%Y %H:%M:%S')
         random_value_list = [0.1,0.2,0.3,-0.1,-0.2,-0.3]
         
         record_list =[]
@@ -918,7 +925,7 @@ class Report_Genration:
         # worksheet = writer.sheets['Hold_Data']
         # worksheet.insert_image('I{}'.format(row_counter+5), "static/Report/THERMAL_REPORT/thermal.png")
         
-        writer.save()
+        writer.close()
 
         return file_name, store_location
 
