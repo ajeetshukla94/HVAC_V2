@@ -1,0 +1,177 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PIN POINT ENGINEERS</title>
+	<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css">
+	<script src="static/js/jquery-3.4.1.min.js"></script>
+	<script defer src="static/js/script1.js"></script>
+	<script type=module defer src="static/js/mainLayout.js"></script>
+	<script src="static/js/nav_handler.js"></script>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+
+<body>
+
+<my-header></my-header>
+
+
+<!-- FRAME SECTION START -->
+	<div id="frame_container">
+		<h5 id = "container_header">Observation Table</h5>
+		<div id="data_frame">
+			<div class="frame">
+				<div class="sections">
+					
+					<label class="form-label col-form-label">Report Name</label></td>
+					<input type="text" name="report_name" id="report_name" value="report_name" class="textfield"></td>
+					
+					<label class="form-label col-form-label">Number Of Sensor</label></td>
+					<input type="text" name="number_of_sensor" id="number_of_sensor" value="report_name" class="textfield"></td>
+					
+					<label class="form-label col-form-label">Interval In Seconds</label></td>
+					<input type="text" name="interval_in_seconds" id="interval_in_seconds" value="report_name" class="textfield"></td>
+					
+					
+					<label class="form-label col-form-label">Stage1 Start Time</label></td>
+					<input type="text" name="stage1_start_time" id="stage1_start_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Stage1 End Time</label></td>
+					<input type="text" name="stage1_end_time" id="stage1_end_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Stage1 Start Temperature</label></td>
+					<input type="text" name="stage1_start_temperature" id="stage1_start_temperature" value="35" class="textfield"></td>
+
+					<label class="form-label col-form-label">Stage1 End Temperature</label></td>
+					<input type="text" name="stage1_end_temperature" id="stage1_end_temperature" value="98" class="textfield"></td>
+
+
+
+
+
+
+					<label class="form-label col-form-label">Number of Left Side Pulse</label></td>
+					<input type="text" name="number_of_left_side_pulse" id="number_of_left_side_pulse" value="3" class="textfield"></td>
+
+					<label class="form-label col-form-label">Left Side Pulse Start Time</label></td>
+					<input type="text" name="left_side_pulse_start_time" id="left_side_pulse_start_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Left Side Pulse End Time</label></td>
+					<input type="text" name="left_side_pulse_end_time" id="left_side_pulse_end_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Left Side Pulse Start Temperature</label></td>
+					<input type="text" name="left_side_pulse_start_temperature" id="left_side_pulse_start_temperature" value="98" class="textfield"></td>
+
+					<label class="form-label col-form-label">Left Side Pulse End Temperature</label></td>
+					<input type="text" name="left_side_pulse_end_temperature" id="left_side_pulse_end_temperature" value="109" class="textfield"></td>
+
+
+
+
+					<label class="form-label col-form-label">Pre Sterlization Start Time</label></td>
+					<input type="text" name="pre_sterlization_start_time" id="pre_sterlization_start_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Pre Sterlization End Time</label></td>
+					<input type="text" name="pre_sterlization_end_time" id="pre_sterlization_end_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Pre Sterlization Start Temperature</label></td>
+					<input type="text" name="pre_sterlization_start_temperature" id="pre_sterlization_start_temperature" value="98" class="textfield"></td>
+
+					<label class="form-label col-form-label">Pre Sterlization End Temperature</label></td>
+					<input type="text" name="pre_sterlization_end_temperature" id="pre_sterlization_end_temperature" value="121" class="textfield"></td>
+
+
+
+
+					<label class="form-label col-form-label">Sterlization Start Time</label></td>
+					<input type="text" name="sterlization_start_time" id="sterlization_start_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Sterlization End Time</label></td>
+					<input type="text" name="sterlization_end_time" id="sterlization_end_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Sterlization Start Temperature</label></td>
+					<input type="text" name="sterlization_start_temperature" id="sterlization_start_temperature" value="121.5" class="textfield"></td>
+
+					<label class="form-label col-form-label">Sterlization End Temperature</label></td>
+					<input type="text" name="sterlization_end_temperature" id="sterlization_end_temperature" value="122.9" class="textfield"></td>
+
+
+
+					<label class="form-label col-form-label">Post Sterlization Start Time</label></td>
+					<input type="text" name="post_sterlization_start_time" id="post_sterlization_start_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Post Sterlization End Time</label></td>
+					<input type="text" name="post_sterlization_end_time" id="post_sterlization_end_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Post Sterlization Start Temperature</label></td>
+					<input type="text" name="post_sterlization_start_temperature" id="post_sterlization_start_temperature" value="122.9" class="textfield"></td>
+
+					<label class="form-label col-form-label">Post Sterlization End Temperature</label></td>
+					<input type="text" name="post_sterlization_end_temperature" id="post_sterlization_end_temperature" value="100" class="textfield"></td>
+
+
+
+
+					<label class="form-label col-form-label">Number of Right Side Pulse</label></td>
+					<input type="text" name="number_of_right_side_pulse" id="number_of_right_side_pulse" value="3" class="textfield"></td>
+
+					<label class="form-label col-form-label">Right Side Pulse Start Time</label></td>
+					<input type="text" name="right_side_pulse_start_time" id="right_side_pulse_start_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Right Side Pulse End Time</label></td>
+					<input type="text" name="right_side_pulse_end_time" id="right_side_pulse_end_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Right Side Pulse Start Temperature</label></td>
+					<input type="text" name="right_side_pulse_start_temperature" id="right_side_pulse_start_temperature" value="100" class="textfield"></td>
+
+					<label class="form-label col-form-label">Right Side Pulse End Temperature</label></td>
+					<input type="text" name="right_side_pulse_end_temperature" id="right_side_pulse_end_temperature" value="106" class="textfield"></td>
+
+
+
+					<label class="form-label col-form-label">Final Stage Start Time</label></td>
+					<input type="text" name="final_stage_start_time" id="final_stage_start_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Final Stage End Time</label></td>
+					<input type="text" name="final_stage_end_time" id="final_stage_end_time" value="30-07-2022 14:14:04" class="textfield"></td>
+
+					<label class="form-label col-form-label">Final Stage Start Temperature</label></td>
+					<input type="text" name="final_stage_start_temperature" id="final_stage_start_temperature" value="35" class="textfield"></td>
+
+					<label class="form-label col-form-label">Final Stage End Temperature</label></td>
+					<input type="text" name="final_stage_end_temperature" id="final_stage_end_temperature" value="98" class="textfield"></td>
+
+
+
+
+
+
+					
+				</div>
+
+				
+				
+			
+			</div>
+		</div>
+		<hr size="10">
+		<div id="action_row">
+			<button id="thermalsubmit_new" name="thermalsubmit_new" type="submit" class="btn btn-sm btn-success " onclick="thermalsubmit_new()">Submit</button>
+		</div>
+	</div>
+
+<my-footer></my-footer>
+
+<script>
+$( document ).ready(function() {
+		var role = "{{ role }}";
+		handle_nav_bar(role);
+	});
+</script>
+
+
+</body>
+
+</html>

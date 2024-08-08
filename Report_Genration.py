@@ -929,6 +929,312 @@ class Report_Genration:
 
         return file_name, store_location
 
+    @staticmethod
+    def generate_thermal_report_new(basic_details):
+        random_value_list = [0.1,0.2,0.3,-0.1,-0.2,-0.3]
+        tunnel_temp_range = 98.9
+        record_list = []
+        
+        report_name               = "MPT-CYCLE-3"
+        number_of_sensor          = 14
+        interval_in_seconds       = 10
+        
+        stage1_start_time         = "04-10-2023 12:28:30"
+        stage1_end_time           = "04-10-2023 12:35:30"
+        stage1_start_temperature  = 35
+        stage1_end_temperature    = 98
+        
+        
+        
+        number_of_left_side_pulse   = 8
+        left_side_pulse_start_time  = "04-10-2023 12:35:30"
+        left_side_pulse_end_time    = "04-10-2023 12:37:00"
+        left_side_pulse_start_temperature = 98
+        left_side_pulse_end_temperature   = 109
+        
+        
+        
+        
+        pre_sterlization_start_time  = "04-10-2023 12:37:00"
+        pre_sterlization_end_time    = "04-10-2023 12:57:30"
+        pre_sterlization_start_temperature = 22
+        pre_sterlization_end_temperature   = 121.1
+        
+        sterlization_start_time  = "04-10-2023 12:57:30"
+        sterlization_end_time    = "04-10-2023 13:27:30"
+        sterlization_start_temperature = 121.5
+        sterlization_end_temperature   = 122.9
+        
+        post_sterlization_start_time  = "04-10-2023 13:27:30"
+        post_sterlization_end_time    = "04-10-2023 13:28:00"
+        post_sterlization_start_temperature = 122.9
+        post_sterlization_end_temperature   = 100
+        
+        
+        
+        
+        number_of_right_side_pulse   = 5
+        right_side_pulse_start_time  = "04-10-2023 13:28:00"
+        right_side_pulse_end_time    = "04-10-2023 13:29:00"
+        right_side_pulse_start_temperature = 100
+        right_side_pulse_end_temperature   = 106
+        
+        
+        
+        
+        final_stage_start_time         = "04-10-2023 13:29:00"
+        final_stage_end_time           = "04-10-2023 13:34:00"
+        final_stage_start_temperature  = 100
+        final_stage_end_temperature    = 98
+
+        cycle_start_stage = pd.date_range(stage1_start_time,stage1_end_time,freq="{}s".format(interval_in_seconds)).strftime('%d-%m-%Y %H:%M:%S')
+        range_length      = len(cycle_start_stage)
+        cycle_start_temp_range = np.linspace(stage1_start_temperature, stage1_end_temperature, num=range_length)
+        counter = 0
+        for i in cycle_start_stage:
+            record = ["",i]
+            if counter  == range_length-1:
+                counter = counter-1
+            for x in range(number_of_sensor):
+                temp_temperture = random.uniform(cycle_start_temp_range[counter],cycle_start_temp_range[counter+1])
+                temp_temperture = temp_temperture + float(random.choice(random_value_list))
+                temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                record.append(temp_temperture)
+            record.append("Cycle Started")
+            record_list.append(record)
+            counter=counter+1
+
+        if number_of_left_side_pulse>0:
+            left_side_peak_stage = pd.date_range(left_side_pulse_start_time,left_side_pulse_end_time,freq="{}s".format(interval_in_seconds)).strftime('%d-%m-%Y %H:%M:%S')
+            
+            for temp_peak_range in np.array_split(left_side_peak_stage, number_of_left_side_pulse):
+                low_to_high_range , high_to_low_range = np.array_split(temp_peak_range, 2)
+            
+                range_length      = len(low_to_high_range)
+                temp_range = np.linspace(left_side_pulse_start_temperature, left_side_pulse_end_temperature, num=range_length)
+                counter = 0
+                for i in low_to_high_range:
+                    record = ["",i]
+                    if counter  == range_length-1:
+                        counter = counter-1
+                    for x in range(number_of_sensor):
+                        temp_temperture = random.uniform(temp_range[counter],temp_range[counter+1])
+                        temp_temperture = temp_temperture + float(random.choice(random_value_list))
+                        temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                        record.append(temp_temperture)
+                    record.append("PEAK CYCLE")
+                    record_list.append(record)
+                    counter=counter+1
+            
+
+                range_length      = len(high_to_low_range)
+                temp_range = np.linspace(left_side_pulse_end_temperature, left_side_pulse_start_temperature, num=range_length)
+                counter = 0
+                for i in high_to_low_range:
+                    record = ["",i]
+                    if counter  == range_length-1:
+                        counter = counter-1
+                    for x in range(number_of_sensor):
+                        temp_temperture = random.uniform(temp_range[counter],temp_range[counter+1])
+                        temp_temperture = temp_temperture + float(random.choice(random_value_list))
+                        temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                        record.append(temp_temperture)
+                    record.append("PEAK CYCLE")
+                    record_list.append(record)
+                    counter=counter+1
+
+        sterlization_stage      = pd.date_range(pre_sterlization_start_time,pre_sterlization_end_time,freq="{}s".format(interval_in_seconds)).strftime('%d-%m-%Y %H:%M:%S')
+        range_length            = len(sterlization_stage)
+        sterlization_temp_range = np.linspace(pre_sterlization_start_temperature, pre_sterlization_end_temperature, num=range_length)
+        counter = 0
+        for i in sterlization_stage:
+            record = ["",i]
+            if counter  == range_length-1:
+                counter = counter-1
+            for x in range(number_of_sensor):
+                temp_temperture = random.uniform(sterlization_temp_range[counter],sterlization_temp_range[counter+1])
+                temp_temperture = temp_temperture + float(random.choice(random_value_list))
+                temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                record.append(temp_temperture)
+            record.append("Pre Sterlization Stage")
+            record_list.append(record)
+            counter=counter+1
+        
+        
+        
+        
+        
+        sterlization_stage      = pd.date_range(sterlization_start_time,sterlization_end_time,freq="{}s".format(interval_in_seconds)).strftime('%d-%m-%Y %H:%M:%S')
+        range_length            = len(sterlization_stage)
+        sterlization_temp_range = np.linspace(sterlization_start_temperature, sterlization_end_temperature, num=range_length)
+        counter = 0
+        for i in sterlization_stage:
+            record = ["",i]
+            if counter  == range_length-1:
+                counter = counter-1
+            for x in range(number_of_sensor):
+                temp_temperture = random.uniform(sterlization_temp_range[counter],sterlization_temp_range[counter+1])
+                temp_temperture = temp_temperture + float(random.choice(random_value_list))
+                temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                record.append(temp_temperture)
+            record.append("Sterlization Stage")
+            record_list.append(record)
+            counter=counter+1
+        
+        
+        sterlization_stage      = pd.date_range(post_sterlization_start_time,post_sterlization_end_time,freq="{}s".format(interval_in_seconds)).strftime('%d-%m-%Y %H:%M:%S')
+        range_length            = len(sterlization_stage)
+        sterlization_temp_range = np.linspace(post_sterlization_start_temperature, post_sterlization_end_temperature, num=range_length)
+        counter = 0
+        for i in sterlization_stage:
+            record = ["",i]
+            if counter  == range_length-1:
+                counter = counter-1
+            for x in range(number_of_sensor):
+                temp_temperture = random.uniform(sterlization_temp_range[counter],sterlization_temp_range[counter+1])
+                temp_temperture = temp_temperture + float(random.choice(random_value_list))
+                temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                record.append(temp_temperture)
+            record.append("Post Sterlization Stage")
+            record_list.append(record)
+            counter=counter+1
+        
+        
+        if number_of_right_side_pulse >0:
+            right_side_peak_stage = pd.date_range(right_side_pulse_start_time,right_side_pulse_end_time,freq="{}s".format(interval_in_seconds)).strftime('%d-%m-%Y %H:%M:%S')
+            
+            for temp_peak_range in np.array_split(right_side_peak_stage, number_of_right_side_pulse):
+                low_to_high_range , high_to_low_range = np.array_split(temp_peak_range, 2)
+            
+                range_length      = len(low_to_high_range)
+                temp_range = np.linspace(right_side_pulse_start_temperature, right_side_pulse_end_temperature, num=range_length)
+                counter = 0
+                for i in low_to_high_range:
+                    record = ["",i]
+                    if counter  == range_length-1:
+                        counter = counter-1
+                    for x in range(number_of_sensor):
+                        temp_temperture = random.uniform(temp_range[counter],temp_range[counter+1])
+                        temp_temperture = temp_temperture + float(random.choice(random_value_list))
+                        temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                        record.append(temp_temperture)
+                    record.append("PEAK CYCLE")
+                    record_list.append(record)
+                    counter=counter+1
+            
+                range_length      = len(high_to_low_range)
+                temp_range = np.linspace(right_side_pulse_end_temperature, right_side_pulse_start_temperature, num=range_length)
+                counter = 0
+                for i in high_to_low_range:
+                    record = ["",i]
+                    if counter  == range_length-1:
+                        counter = counter-1
+                    for x in range(number_of_sensor):
+                        temp_temperture = random.uniform(temp_range[counter],temp_range[counter+1])
+                        temp_temperture = temp_temperture + float(random.choice(random_value_list))
+                        temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                        record.append(temp_temperture)
+                    record.append("PEAK CYCLE")
+                    record_list.append(record)
+                    counter=counter+1
+
+
+        cycle_final_stage = pd.date_range(final_stage_start_time,final_stage_end_time,freq="{}s".format(interval_in_seconds)).strftime('%d-%m-%Y %H:%M:%S')
+        range_length      = len(cycle_final_stage)
+        cycle_final_temp_range = np.linspace(final_stage_start_temperature, final_stage_end_temperature, num=range_length)
+        counter = 0
+        for i in cycle_final_stage:
+            record = ["",i]
+            if counter  == range_length-1:
+                counter = counter-1
+            for x in range(number_of_sensor):
+                temp_temperture = random.uniform(cycle_final_temp_range[counter],cycle_final_temp_range[counter+1])
+                temp_temperture = temp_temperture + float(random.choice(random_value_list))
+                temp_temperture = '{0:.1f}'.format(temp_temperture) 
+                record.append(temp_temperture)
+            record.append("Cycle Ended")
+            record_list.append(record)
+            counter=counter+1
+
+
+        temp_df = pd.DataFrame(record_list)
+        columns_list = ["DATE","TIME"]
+        for i in  range(1,number_of_sensor+1):
+            columns_list.append("CH{}".format(str(i).zfill(2)))
+        columns_list.append("STAGE")
+        temp_df.columns = columns_list
+        for i in  range(1,number_of_sensor+1):
+            columns_name = ("CH{}".format(str(i).zfill(2)))
+            temp_df[columns_name] =temp_df[columns_name].astype(float)
+        
+        temp_df["DATE"] = "" 
+        temp_df['TIME'] = temp_df['TIME'].astype(str) 
+        temp_df[['DATE','TIME']] = temp_df['TIME'].str.split(' ',expand=True)
+
+
+
+        working_directory = MYDIR + "/" "static/Report/THERMAL_REPORT/{}"
+        final_working_directory = "static/Report/THERMAL_REPORT/thermal.xlsx"
+        file_name = "{}.xlsx".format(report_name)
+        writer = pd.ExcelWriter(final_working_directory, engine='xlsxwriter')
+
+        store_location = final_working_directory
+        final_working_directory = MYDIR + "/"+final_working_directory
+        print(final_working_directory)
+
+        
+        temp_df.to_excel(writer, sheet_name='Raw Data',index=False)
+        trn_df = temp_df[temp_df['STAGE']=="Sterlization Stage"]
+        trn_df = trn_df.drop('STAGE', axis=1)
+        
+        trn_df_2 = pd.DataFrame()
+        trn_df_2['MIN'] = trn_df.drop(['DATE','TIME'], axis=1).min(axis=1)
+        trn_df_2['MAX'] = trn_df.drop(['DATE','TIME'], axis=1).max(axis=1)
+        trn_df_2['AVG'] = trn_df.drop(['DATE','TIME'], axis=1).mean(axis=1)
+        trn_df_2['DIF'] = trn_df_2['MAX'] - trn_df_2['MIN']
+        trn_df_2['AVG'] = trn_df_2['AVG'].round(1)
+        
+        column_list = trn_df.columns.tolist()
+        action_list = ['min','max','mean','dif']
+        record_list = []
+        for action in action_list:
+            record = []
+            record.append(action)
+            if action!="dif":
+                for i in range(2,len(column_list)):
+                    operation = "round(trn_df[column_list[i]].{}(),1)".format(action)
+                    record.append(eval(operation))
+            if action == "dif":
+                for i in range(2,len(column_list)):
+                    max = "round(trn_df[column_list[i]].max(),1)"
+                    max = eval(max)
+                    min = "round(trn_df[column_list[i]].min(),1)"
+                    min = eval(min)
+                    dif = max-min
+                    record.append(dif)
+                
+            record_list.append(record) 
+        row_counter = trn_df.shape[0]+1
+        trn_df_3 = pd.DataFrame(record_list)
+        
+        trn_df_4 = trn_df.copy()
+        delta = 60/interval_in_seconds
+        for i in range(2,(len(column_list))):
+            trn_df_4[column_list[i]] =trn_df_4[column_list[i]].astype(float)
+            trn_df_4[column_list[i]] =  ((trn_df_4[column_list[i]]-121)/10)/delta
+            trn_df_4[column_list[i]] =  pow(10,trn_df_4[column_list[i]])
+            trn_df_4[column_list[i]] =  trn_df_4[column_list[i]].round(2)
+            
+        
+        trn_df.to_excel(writer, sheet_name='Hold_Data',index=False)
+        trn_df_2.to_excel(writer, sheet_name='Hold_Data',startcol=len(column_list)+1,index=False)
+        trn_df_3.to_excel(writer, sheet_name='Hold_Data',startrow=row_counter,startcol=1,header=False,index=False)
+        trn_df_4.to_excel(writer, sheet_name='Hold_Data',startrow=row_counter+5,startcol=0,index=False)
+        
+        writer.close()
+        return file_name, store_location
+            
+            
 
 
 

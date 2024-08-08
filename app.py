@@ -687,6 +687,13 @@ def thermal_report():
         return make_response(render_template('HVAC_SOLUTION/Thermal.html',role = role),200) 
     return make_response(render_template('LOGIN_PAGE/login.html'),200)   
 
+@app.route("/Thermal_new")
+def Thermal_new():
+    if 'user' in session:
+        session_var = session['user']
+        role = session_var["role"]
+        return make_response(render_template('HVAC_SOLUTION/Thermal_new.html',role = role),200) 
+    return make_response(render_template('LOGIN_PAGE/login.html'),200)  
 
 @app.route("/submit_thermal_report",methods=['GET', 'POST'])
 def submit_thermal_report():
@@ -695,6 +702,17 @@ def submit_thermal_report():
         basic_details = json.loads(data)        
         session_var   = session['user']		
         file_name,file_path = Report_Genration.generate_thermal_report(basic_details)           
+        d = {"error":"none","file_name":file_name,"file_path":file_path}
+       
+        return flask.jsonify(d)    
+
+@app.route("/submit_thermal_report_new",methods=['GET', 'POST'])
+def submit_thermal_report_new():
+    if 'user' in session:
+        data          = request.form.get('params_data')
+        basic_details = json.loads(data)        
+        session_var   = session['user']		
+        file_name,file_path = Report_Genration.generate_thermal_report_new(basic_details)           
         d = {"error":"none","file_name":file_name,"file_path":file_path}
        
         return flask.jsonify(d)    

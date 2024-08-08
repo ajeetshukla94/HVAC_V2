@@ -171,6 +171,76 @@ function thermal_submit(){
 
 
 
+function thermalsubmit_new(){
+	
+	$('#thermalsubmit_new').hide()
+	var frame_list = document.getElementsByClassName("frame");
+	var basic_details = {};
+	
+	basic_details['report_name'] =$('#report_name').val();
+	basic_details['number_of_sensor'] =$('#number_of_sensor').val();
+	basic_details['interval_in_seconds'] =$('#interval_in_seconds').val();
+
+	basic_details['stage1_start_time'] =$('#stage1_start_time').val();
+	basic_details['stage1_end_time'] =$('#stage1_end_time').val();
+	basic_details['stage1_start_temperature'] =$('#stage1_start_temperature').val();
+	basic_details['stage1_end_temperature']   = $('#stage1_end_temperature').val();
+
+	basic_details['number_of_left_side_pulse'] =$('#number_of_left_side_pulse').val();
+	basic_details['left_side_pulse_start_time'] =$('#left_side_pulse_start_time').val();
+	basic_details['left_side_pulse_end_time'] =$('#left_side_pulse_end_time').val();
+	basic_details['left_side_pulse_start_temperature'] =$('#left_side_pulse_start_temperature').val();
+	basic_details['left_side_pulse_end_temperature'] =$('#left_side_pulse_end_temperature').val();
+
+	basic_details['pre_sterlization_start_time'] =$('#pre_sterlization_start_time').val();
+	basic_details['pre_sterlization_end_time'] =$('#pre_sterlization_end_time').val();
+	basic_details['pre_sterlization_start_temperature'] =$('#pre_sterlization_start_temperature').val();
+	basic_details['pre_sterlization_end_temperature'] =$('#pre_sterlization_end_temperature').val();
+	
+	basic_details['sterlization_start_time'] =$('#sterlization_start_time').val();
+	basic_details['sterlization_end_time'] =$('#sterlization_end_time').val();
+	basic_details['sterlization_start_temperature'] =$('#sterlization_start_temperature').val();
+	basic_details['sterlization_end_temperature'] =$('#sterlization_end_temperature').val();
+
+
+	basic_details['post_sterlization_start_time'] =$('#post_sterlization_start_time').val();
+	basic_details['post_sterlization_end_time'] =$('#post_sterlization_end_time').val();
+	basic_details['post_sterlization_start_temperature'] =$('#post_sterlization_start_temperature').val();
+	basic_details['post_sterlization_end_temperature'] =$('#post_sterlization_end_temperature').val();
+		
+
+	basic_details['number_of_right_side_pulse'] =$('#number_of_right_side_pulse').val();
+	basic_details['right_side_pulse_start_time'] =$('#right_side_pulse_start_time').val();
+	basic_details['right_side_pulse_end_time'] =$('#right_side_pulse_end_time').val();
+	basic_details['right_side_pulse_start_temperature'] =$('#right_side_pulse_start_temperature').val();
+	basic_details['right_side_pulse_end_temperature'] =$('#right_side_pulse_end_temperature').val();
+
+
+	basic_details['final_stage_start_time'] =$('#final_stage_start_time').val();
+	basic_details['final_stage_end_time'] =$('#final_stage_end_time').val();
+	basic_details['final_stage_start_temperature'] =$('#final_stage_start_temperature').val();
+	basic_details['final_stage_end_temperature'] =$('#final_stage_end_temperature').val();
+
+	$.post('/submit_thermal_report_new', 
+	{
+		params_data : JSON.stringify(basic_details)
+	}, function(result) 
+	{
+		var link = document.createElement('a')
+		link.href =result.file_path;
+		link.download = result.file_name;
+		link.dispatchEvent(new MouseEvent('click'));
+		$('#thermalsubmit_new').show()
+		
+
+		
+	});
+	
+}
+
+
+
+
 
 function add_users()
 {
