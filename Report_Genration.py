@@ -935,57 +935,57 @@ class Report_Genration:
         tunnel_temp_range = 98.9
         record_list = []
         
-        report_name               = "MPT-CYCLE-3"
-        number_of_sensor          = 14
-        interval_in_seconds       = 10
+        report_name               = str(basic_details['report_name'])
+        number_of_sensor          = int(basic_details['number_of_sensor'])
+        interval_in_seconds       = int(basic_details['interval_in_seconds'])
         
-        stage1_start_time         = "04-10-2023 12:28:30"
-        stage1_end_time           = "04-10-2023 12:35:30"
-        stage1_start_temperature  = 35
-        stage1_end_temperature    = 98
-        
-        
-        
-        number_of_left_side_pulse   = 8
-        left_side_pulse_start_time  = "04-10-2023 12:35:30"
-        left_side_pulse_end_time    = "04-10-2023 12:37:00"
-        left_side_pulse_start_temperature = 98
-        left_side_pulse_end_temperature   = 109
+        stage1_start_time         = str(basic_details['stage1_start_time'])
+        stage1_end_time           = str(basic_details['stage1_end_time'])
+        stage1_start_temperature  = float(basic_details['stage1_start_temperature'])
+        stage1_end_temperature    = float(basic_details['stage1_end_temperature'])
         
         
         
-        
-        pre_sterlization_start_time  = "04-10-2023 12:37:00"
-        pre_sterlization_end_time    = "04-10-2023 12:57:30"
-        pre_sterlization_start_temperature = 22
-        pre_sterlization_end_temperature   = 121.1
-        
-        sterlization_start_time  = "04-10-2023 12:57:30"
-        sterlization_end_time    = "04-10-2023 13:27:30"
-        sterlization_start_temperature = 121.5
-        sterlization_end_temperature   = 122.9
-        
-        post_sterlization_start_time  = "04-10-2023 13:27:30"
-        post_sterlization_end_time    = "04-10-2023 13:28:00"
-        post_sterlization_start_temperature = 122.9
-        post_sterlization_end_temperature   = 100
+        number_of_left_side_pulse   = int(basic_details['number_of_left_side_pulse'])
+        left_side_pulse_start_time  = str(basic_details['left_side_pulse_start_time'])
+        left_side_pulse_end_time    = str(basic_details['left_side_pulse_end_time'])
+        left_side_pulse_start_temperature = float(basic_details['left_side_pulse_start_temperature'])
+        left_side_pulse_end_temperature   = float(basic_details['left_side_pulse_end_temperature'])
         
         
         
         
-        number_of_right_side_pulse   = 5
-        right_side_pulse_start_time  = "04-10-2023 13:28:00"
-        right_side_pulse_end_time    = "04-10-2023 13:29:00"
-        right_side_pulse_start_temperature = 100
-        right_side_pulse_end_temperature   = 106
+        pre_sterlization_start_time  = str(basic_details['pre_sterlization_start_time'])
+        pre_sterlization_end_time    = str(basic_details['pre_sterlization_end_time'])
+        pre_sterlization_start_temperature = float(basic_details['pre_sterlization_start_temperature'])
+        pre_sterlization_end_temperature   = float(basic_details['pre_sterlization_end_temperature'])
+        
+        sterlization_start_time  = str(basic_details['sterlization_start_time'])
+        sterlization_end_time    = str(basic_details['sterlization_end_time'])
+        sterlization_start_temperature = float(basic_details['sterlization_start_temperature'])
+        sterlization_end_temperature   = float(basic_details['sterlization_end_temperature'])
+        
+        post_sterlization_start_time  = str(basic_details['post_sterlization_start_time'])
+        post_sterlization_end_time    = str(basic_details['post_sterlization_end_time'])
+        post_sterlization_start_temperature = float(basic_details['post_sterlization_start_temperature'])
+        post_sterlization_end_temperature   = float(basic_details['post_sterlization_end_temperature'])
         
         
         
         
-        final_stage_start_time         = "04-10-2023 13:29:00"
-        final_stage_end_time           = "04-10-2023 13:34:00"
-        final_stage_start_temperature  = 100
-        final_stage_end_temperature    = 98
+        number_of_right_side_pulse   = int(basic_details['number_of_right_side_pulse'])
+        right_side_pulse_start_time  = str(basic_details['right_side_pulse_start_time'])
+        right_side_pulse_end_time    = str(basic_details['right_side_pulse_end_time'])
+        right_side_pulse_start_temperature = float(basic_details['right_side_pulse_start_temperature'])
+        right_side_pulse_end_temperature   = float(basic_details['right_side_pulse_end_temperature'])
+        
+        
+        
+        
+        final_stage_start_time         = str(basic_details['final_stage_start_time'])
+        final_stage_end_time           = str(basic_details['final_stage_end_time'])
+        final_stage_start_temperature  = float(basic_details['final_stage_start_temperature'])
+        final_stage_end_temperature    = float(basic_details['final_stage_end_temperature'])
 
         cycle_start_stage = pd.date_range(stage1_start_time,stage1_end_time,freq="{}s".format(interval_in_seconds)).strftime('%d-%m-%Y %H:%M:%S')
         range_length      = len(cycle_start_stage)
